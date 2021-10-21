@@ -1,0 +1,17 @@
+{
+    "name": "MaximeActions",
+    "maps": [],
+    "controlSchemes": [
+        {
+            "name": "Default",
+            "bindingGroup": "Default",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
