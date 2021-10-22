@@ -581,8 +581,7 @@ MonoBehaviour:
   sprintCooldown: 5
   battery: 100
   batteryMax: 100
-  batterySpeed: 10
-  newBattery: 25
+  batterySpeed: 1
   flashlightBars: {fileID: 1905209922}
   flashlight3Bars: {fileID: 21300000, guid: f220bd735d6cbc64b895575d424e7e98, type: 3}
   flashlight2Bars: {fileID: 21300000, guid: 05516612b9ae05c4793d3f8cbb12cd9f, type: 3}

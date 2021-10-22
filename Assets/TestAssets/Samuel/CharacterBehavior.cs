@@ -24,6 +24,7 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private float sprintSpeed;
     [SerializeField] private float sprintDuration;
     [SerializeField] private float sprintCooldown;
+    private float sprintCldn;
 
     // BATTERY
     [SerializeField] private float battery;
@@ -132,10 +133,10 @@ public class CharacterBehavior : MonoBehaviour
         }
 
         // SPRINT
-        if(sprintCooldown > 0){
+        if(sprintCldn > 0){
             isAbleToSprint = false;
-            sprintCooldown -= Time.deltaTime;
-        }else if(sprintCooldown <= 0){
+            sprintCldn -= Time.deltaTime;
+        }else if(sprintCldn <= 0){
             isAbleToSprint = true;
         }
     }
@@ -150,7 +151,7 @@ public class CharacterBehavior : MonoBehaviour
 
     IEnumerator SprintCoroutine(){
         if(isAbleToSprint){
-            sprintCooldown = 5f + sprintDuration;
+            sprintCldn = sprintCooldown + sprintDuration;
             speed += sprintSpeed;
             yield return new WaitForSeconds(sprintDuration);
             speed -= sprintSpeed;
