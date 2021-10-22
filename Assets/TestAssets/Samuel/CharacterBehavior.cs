@@ -9,16 +9,22 @@ public class CharacterBehavior : MonoBehaviour
     private GameObject flashlight;
     private Rigidbody2D rb2D;
     [SerializeField] private float speed;
+    [SerializeField] private float sprintSpeed;
+    [SerializeField] private float sprintDuration;
+    [SerializeField] private float sprintCooldown;
+    private bool isAbleToSprint;
     private PlayerInput pInput;
     private Vector2 move;
     private InputAction moveAction;
     private InputAction flashlightAction;
     private InputAction interactAction;
+    private InputAction sprintAction;
 
     // BATTERY
     [SerializeField] private float battery;
     [SerializeField] private float batteryMax;
     [SerializeField] private float batterySpeed;
+    [SerializeField] private float newBattery;
 
     void Start()
     {
@@ -31,9 +37,11 @@ public class CharacterBehavior : MonoBehaviour
         moveAction = pInput.actions.FindAction("Move");
         flashlightAction = pInput.actions.FindAction("Flashlight");
         interactAction = pInput.actions.FindAction("Interact");
+        sprintAction = pInput.actions.FindAction("Sprint");
         moveAction.Enable();
         flashlightAction.Enable();
         interactAction.Enable();
+        sprintAction.Enable();
     }
 
     public void Move(InputAction.CallbackContext context){
@@ -58,6 +66,12 @@ public class CharacterBehavior : MonoBehaviour
         // Get Interact Key
         if(interactAction.triggered){
             Debug.Log("Interact!");
+        }
+    }
+
+    public void Sprint(InputAction.CallbackContext context){
+        if(sprintAction.triggered){
+            StartCoroutine("SprintCoroutine");
         }
     }
 
@@ -95,12 +109,28 @@ public class CharacterBehavior : MonoBehaviour
         if(battery > batteryMax){
             battery = batteryMax;
         }
+
+        if(sprintCooldown > 0){
+            isAbleToSprint = false;
+            sprintCooldown -= Time.deltaTime;
+        }else if(sprintCooldown <= 0){
+            isAbleToSprint = true;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D col){
         if(col.tag == "Battery"){
-            battery += 25;
+            battery += newBattery;
             Destroy(col.gameObject);
+        }
+    }
+
+    IEnumerator SprintCoroutine(){
+        if(isAbleToSprint){
+            sprintCooldown = 5f + sprintDuration;
+            speed += sprintSpeed;
+            yield return new WaitForSeconds(sprintDuration);
+            speed -= sprintSpeed;
         }
     }
 }
