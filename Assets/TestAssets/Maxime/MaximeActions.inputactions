@@ -6,7 +6,7 @@
             "id": "656829f1-1ec5-4c8c-9e18-0ccf9663f84d",
             "actions": [
                 {
-                    "name": "Lamp",
+                    "name": "Flashlight",
                     "type": "Button",
                     "id": "a83720e4-7375-4e38-8305-4c06fca1b78f",
                     "expectedControlType": "Button",
@@ -30,7 +30,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Default",
-                    "action": "Lamp",
+                    "action": "Flashlight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
