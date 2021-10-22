@@ -5,23 +5,35 @@ using UnityEngine.InputSystem;
 
 public class CharacterBehavior : MonoBehaviour
 {
-    [SerializeField] private GameObject character;
-    [SerializeField] private Rigidbody2D rb2D;
+    private GameObject character;
+    private Rigidbody2D rb2D;
     [SerializeField] private float speed;
+    private PlayerInput pInput;
     private Vector2 move;
     private InputAction moveAction;
 
     void Start()
     {
-        // character = gameObject;
-        // rb2D = gameObject.GetComponent<Rigidbody2D>();
+        character = gameObject;
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
+        pInput = gameObject.GetComponent<PlayerInput>();
+        moveAction = pInput.actions.FindAction("Move");
+        moveAction.Enable();
     }
 
     public void Move(InputAction.CallbackContext context){
         move = context.ReadValue<Vector2>();
 
-        Debug.Log(move.x);
-        Debug.Log(move.y);
+        // Debug.Log(move.x);
+        // Debug.Log(move.y);
+    }
+
+    public void Flashlight(InputAction.CallbackContext context){
+        // Get Flashlight Key
+    }
+
+    public void Interact(InputAction.CallbackContext context){
+        // Get Interact Key
     }
 
     void FixedUpdate(){
@@ -30,7 +42,6 @@ public class CharacterBehavior : MonoBehaviour
 
             if (move.x < 0f)
             {
-                Debug.Log("hello");
                 newPos += Time.fixedDeltaTime * speed * Vector2.left;
             }
             if (move.x > 0f)
