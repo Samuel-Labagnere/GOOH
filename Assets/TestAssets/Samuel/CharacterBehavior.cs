@@ -29,7 +29,12 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private float battery;
     [SerializeField] private float batteryMax;
     [SerializeField] private float batterySpeed;
-    [SerializeField] private float newBattery;
+    private float newBattery;
+    [SerializeField] private SpriteRenderer flashlightBars;
+    [SerializeField] private Sprite flashlight3Bars;
+    [SerializeField] private Sprite flashlight2Bars;
+    [SerializeField] private Sprite flashlight1Bar;
+    [SerializeField] private Sprite flashlight0Bar;
 
     void Start()
     {
@@ -37,6 +42,7 @@ public class CharacterBehavior : MonoBehaviour
         character = gameObject;
         flashlight = character.transform.GetChild(0).gameObject;
         flashlight.SetActive(false);
+        newBattery = batteryMax/3;
 
         // battery = batteryMax;
         rb2D = gameObject.GetComponent<Rigidbody2D>();
@@ -113,6 +119,16 @@ public class CharacterBehavior : MonoBehaviour
         }
         if(battery > batteryMax){
             battery = batteryMax;
+        }
+
+        if(battery >= (batteryMax/3)*2){
+            flashlightBars.sprite = flashlight3Bars;
+        }else if(battery >= (batteryMax/3)){
+            flashlightBars.sprite = flashlight2Bars;
+        }else if(battery < (batteryMax/3) && battery > 0){
+            flashlightBars.sprite = flashlight1Bar;
+        }else{
+            flashlightBars.sprite = flashlight0Bar;
         }
 
         // SPRINT
