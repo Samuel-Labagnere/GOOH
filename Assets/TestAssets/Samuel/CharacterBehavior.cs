@@ -5,20 +5,25 @@ using UnityEngine.InputSystem;
 
 public class CharacterBehavior : MonoBehaviour
 {
+    // GAMEOBJECTS
     private GameObject character;
     private GameObject flashlight;
-    private Rigidbody2D rb2D;
-    [SerializeField] private float speed;
-    [SerializeField] private float sprintSpeed;
-    [SerializeField] private float sprintDuration;
-    [SerializeField] private float sprintCooldown;
-    private bool isAbleToSprint;
+
+    // INPUTACTIONS
     private PlayerInput pInput;
-    private Vector2 move;
     private InputAction moveAction;
     private InputAction flashlightAction;
     private InputAction interactAction;
     private InputAction sprintAction;
+
+    // MOVEMENT
+    private Rigidbody2D rb2D;
+    private bool isAbleToSprint;
+    private Vector2 move;
+    [SerializeField] private float speed;
+    [SerializeField] private float sprintSpeed;
+    [SerializeField] private float sprintDuration;
+    [SerializeField] private float sprintCooldown;
 
     // BATTERY
     [SerializeField] private float battery;
@@ -28,12 +33,16 @@ public class CharacterBehavior : MonoBehaviour
 
     void Start()
     {
+        // SET VARS
         character = gameObject;
         flashlight = character.transform.GetChild(0).gameObject;
         flashlight.SetActive(false);
+
         // battery = batteryMax;
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         pInput = gameObject.GetComponent<PlayerInput>();
+
+        // INPUTACTIONS
         moveAction = pInput.actions.FindAction("Move");
         flashlightAction = pInput.actions.FindAction("Flashlight");
         interactAction = pInput.actions.FindAction("Interact");
@@ -46,13 +55,9 @@ public class CharacterBehavior : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context){
         move = context.ReadValue<Vector2>();
-
-        // Debug.Log(move.x);
-        // Debug.Log(move.y);
     }
 
     public void Flashlight(InputAction.CallbackContext context){
-        // Get Flashlight Key
         if(flashlightAction.triggered){
             if(!flashlight.activeSelf && battery > 0){
                 flashlight.SetActive(true);
@@ -63,7 +68,6 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     public void Interact(InputAction.CallbackContext context){
-        // Get Interact Key
         if(interactAction.triggered){
             Debug.Log("Interact!");
         }
@@ -99,6 +103,7 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     void Update(){
+        // FLASHLIGHT
         if(flashlight.activeSelf){
             battery -= Time.deltaTime * batterySpeed;
             if(battery <= 0){
@@ -110,6 +115,7 @@ public class CharacterBehavior : MonoBehaviour
             battery = batteryMax;
         }
 
+        // SPRINT
         if(sprintCooldown > 0){
             isAbleToSprint = false;
             sprintCooldown -= Time.deltaTime;
@@ -119,6 +125,7 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D col){
+        // GAIN BATTERY
         if(col.tag == "Battery"){
             battery += newBattery;
             Destroy(col.gameObject);
