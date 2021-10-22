@@ -378,6 +378,7 @@ MonoBehaviour:
   character: {fileID: 1401937796}
   rb2D: {fileID: 1401937798}
   speed: 10
+  pInput: {fileID: 1401937801}
 --- !u!50 &1401937798
 Rigidbody2D:
   serializedVersion: 4
@@ -491,7 +492,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1401937797}
+        m_TargetAssemblyTypeName: CharacterBehavior, Assembly-CSharp
+        m_MethodName: Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 36320878-32fd-4214-9503-2b1eb374b3f1
     m_ActionName: Player/Up[/Keyboard/z]
   - m_PersistentCalls:
@@ -504,7 +517,7 @@ MonoBehaviour:
     m_ActionName: Player/Flashlight[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &1827780902
