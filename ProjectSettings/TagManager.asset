@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Battery
   - Enemy
+  - Coin
   layers:
   - Default
   - TransparentFX

@@ -9,7 +9,7 @@ public class EnemyBehavior : MonoBehaviour
     private Rigidbody2D rb2D;
     private GameObject enemy;
     private Vector2 randomDirection;
-    private Vector2 direction;
+    [SerializeField] private Vector2 direction;
 
     void Start(){
         enemy = gameObject;
@@ -37,9 +37,22 @@ public class EnemyBehavior : MonoBehaviour
         // Debug.Log("x = " + direction.x + " y = " + direction.y);
     }
 
-    void OnCollisionStay2D(Collision2D col){
+    void OnCollisionEnter2D(Collision2D col){
+        Debug.Log("Collision!");
         // Debug.Log(col.contacts);
         // direction = new Vector2(-1*direction.x*Random.Range(0.1f, 1f), -1*direction.y*Random.Range(0.1f, 1f));
-        direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+        Vector2 oldDirection = direction;
+        rb2D.AddForce(new Vector2(0f, 0f));
+        if(oldDirection.x == 1f){
+            direction.x = speedArray[Random.Range(0, 1)];
+        }else if(oldDirection.x == -1f){
+            direction.x = speedArray[Random.Range(1, 2)];
+        }
+        if(oldDirection.y == 1f){
+            direction.y = speedArray[Random.Range(0, 1)];
+        }else if(oldDirection.y == -1f){
+            direction.y = speedArray[Random.Range(1, 2)];
+        }
+        // direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
     }
 }
