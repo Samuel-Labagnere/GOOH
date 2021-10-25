@@ -18,7 +18,6 @@ public class EnemyBehavior : MonoBehaviour
         speedArray[0] = -1f;
         speedArray[1] = 0f;
         speedArray[2] = 1f;
-        // randomDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
         randomDirection = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
         direction = randomDirection;
 
@@ -38,13 +37,10 @@ public class EnemyBehavior : MonoBehaviour
             direction = new Vector2(speedArray[Random.Range(0, 2)], Random.Range(0, 2));
         }
         rb2D.MovePosition(newPos);
-        // Debug.Log("x = " + direction.x + " y = " + direction.y);
     }
 
     void OnCollisionEnter2D(Collision2D col){
         // Debug.Log("Collision!");
-        // Debug.Log(col.contacts);
-        // direction = new Vector2(-1*direction.x*Random.Range(0.1f, 1f), -1*direction.y*Random.Range(0.1f, 1f));
         Vector2 oldDirection = direction;
         rb2D.AddForce(new Vector2(0f, 0f));
         if(oldDirection.x == 1f){

@@ -55,7 +55,6 @@ public class CharacterBehavior : MonoBehaviour
         flashlight.SetActive(false);
         newBattery = batteryMax/3;
 
-        // battery = batteryMax;
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         pInput = gameObject.GetComponent<PlayerInput>();
         lightCircle.transform.localScale = new Vector3(lightCircleBaseScale, lightCircleBaseScale, 0f);
