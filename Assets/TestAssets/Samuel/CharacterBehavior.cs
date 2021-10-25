@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class CharacterBehavior : MonoBehaviour
 {
@@ -38,6 +39,11 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private Sprite flashlight1Bar;
     [SerializeField] private Sprite flashlight0Bar;
 
+    // COIN
+    [SerializeField] private int score;
+    [SerializeField] private Text scoreTxtObject;
+    [SerializeField] private string scoreText;
+
     void Start()
     {
         // SET VARS
@@ -49,6 +55,9 @@ public class CharacterBehavior : MonoBehaviour
         // battery = batteryMax;
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         pInput = gameObject.GetComponent<PlayerInput>();
+
+        // COIN
+        scoreTxtObject.text = scoreText + score.ToString();
 
         // INPUTACTIONS
         moveAction = pInput.actions.FindAction("Move");
@@ -91,19 +100,19 @@ public class CharacterBehavior : MonoBehaviour
         // CONTROLS
         Vector2 newPos = rb2D.position;
 
-            if (move.x < 0f)
+            if (move.x < 0f) // LEFT
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.left;
             }
-            if (move.x > 0f)
+            if (move.x > 0f) // RIGHT
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.right;
             }
-            if (move.y > 0f)
+            if (move.y > 0f) // UP
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.up;
             }
-            if (move.y < 0f)
+            if (move.y < 0f) // DOWN
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.down;
             }
@@ -150,6 +159,10 @@ public class CharacterBehavior : MonoBehaviour
         // GAIN BATTERY
         if(col.tag == "Battery"){
             battery += newBattery;
+            Destroy(col.gameObject);
+        }else if(col.tag == "Coin"){
+            score += 1;
+            scoreTxtObject.text = scoreText + score.ToString();
             Destroy(col.gameObject);
         }
     }
