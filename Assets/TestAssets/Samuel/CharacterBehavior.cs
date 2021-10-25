@@ -24,6 +24,7 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private float sprintSpeed;
     [SerializeField] private float sprintDuration;
     [SerializeField] private float sprintCooldown;
+    [SerializeField] private AudioSource walkSound;
     private float sprintCldn;
 
     // BATTERY
@@ -105,6 +106,10 @@ public class CharacterBehavior : MonoBehaviour
             if (move.y < 0f)
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.down;
+            }
+
+            if(newPos != rb2D.position && !walkSound.isPlaying){
+                walkSound.Play();
             }
             rb2D.MovePosition(newPos);
     }
