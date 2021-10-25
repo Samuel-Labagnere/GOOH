@@ -38,6 +38,9 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private Sprite flashlight2Bars;
     [SerializeField] private Sprite flashlight1Bar;
     [SerializeField] private Sprite flashlight0Bar;
+    [SerializeField] private GameObject lightCircle;
+    [SerializeField] private float lightCircleBaseScale;
+    [SerializeField] private float lightCircleModifiedScale;
 
     // COIN
     [SerializeField] private int score;
@@ -55,6 +58,7 @@ public class CharacterBehavior : MonoBehaviour
         // battery = batteryMax;
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         pInput = gameObject.GetComponent<PlayerInput>();
+        lightCircle.transform.localScale = new Vector3(lightCircleBaseScale, lightCircleBaseScale, 0f);
 
         // COIN
         scoreTxtObject.text = scoreText + score.ToString();
@@ -78,8 +82,10 @@ public class CharacterBehavior : MonoBehaviour
         if(flashlightAction.triggered){
             if(!flashlight.activeSelf && battery > 0){
                 flashlight.SetActive(true);
+                lightCircle.transform.localScale = new Vector3(lightCircleModifiedScale, lightCircleModifiedScale, 0f);
             }else{
                 flashlight.SetActive(false);
+                lightCircle.transform.localScale = new Vector3(lightCircleBaseScale, lightCircleBaseScale, 0f);
             }
         }
     }
@@ -130,6 +136,7 @@ public class CharacterBehavior : MonoBehaviour
             if(battery <= 0){
                 battery = 0;
                 flashlight.SetActive(false);
+                lightCircle.transform.localScale = new Vector3(lightCircleBaseScale, lightCircleBaseScale, 0f);
             }
         }
         if(battery > batteryMax){
