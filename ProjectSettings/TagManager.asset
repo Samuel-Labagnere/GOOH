@@ -7,6 +7,7 @@ TagManager:
   - Battery
   - Enemy
   - Coin
+  - Flashlight
   layers:
   - Default
   - TransparentFX

@@ -8,6 +8,7 @@ public class EnemyBehavior : MonoBehaviour
     private float[] speedArray = new float[3];
     private Rigidbody2D rb2D;
     private GameObject enemy;
+    private SpriteRenderer enemySprite;
     private Vector2 randomDirection;
     [SerializeField] private Vector2 direction;
 
@@ -20,6 +21,9 @@ public class EnemyBehavior : MonoBehaviour
         // randomDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
         randomDirection = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
         direction = randomDirection;
+
+        enemySprite = enemy.GetComponent<SpriteRenderer>();
+        enemySprite.color = new Color(1f, 1f, 1f, 0f);
     }
 
     void Update(){
@@ -38,7 +42,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D col){
-        Debug.Log("Collision!");
+        // Debug.Log("Collision!");
         // Debug.Log(col.contacts);
         // direction = new Vector2(-1*direction.x*Random.Range(0.1f, 1f), -1*direction.y*Random.Range(0.1f, 1f));
         Vector2 oldDirection = direction;
@@ -54,5 +58,11 @@ public class EnemyBehavior : MonoBehaviour
             direction.y = speedArray[Random.Range(1, 2)];
         }
         // direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+    }
+
+    void OnTriggerEnter2D(Collider2D col){
+        if(col.tag == "Flashlight"){
+            enemySprite.color = new Color(1f, 1f, 1f, 1f);
+        }
     }
 }
