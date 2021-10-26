@@ -26,6 +26,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private GameObject heart;
     [SerializeField] private GameObject heartSpawner;
     [SerializeField] private SpriteRenderer icon;
+    private GameObject[] heartArray;
 
     void Start(){
         enemy = gameObject;
@@ -43,8 +44,27 @@ public class EnemyBehavior : MonoBehaviour
         enemySprite.color = new Color(1f, 1f, 1f, 0f);
 
         invulnerable = false;
+        int rightSpace = 0;
+        int leftSpace = 0;
+        heartArray = new GameObject[lives];
         for(int i=0; i < lives; i++){
-            Instantiate(heart, new Vector2(heartSpawner.transform.localPosition.x, heartSpawner.transform.localPosition.y), Quaternion.identity);
+            Vector2 heartSpawnerPos = new Vector2(0f, 0f);
+            if(lives%2 == 0){
+                heartSpawnerPos = new Vector2(heartSpawner.transform.position.x-0.5f, heartSpawner.transform.position.y);
+            }else{
+                heartSpawnerPos = heartSpawner.transform.position;
+            }
+            GameObject heartInst = Instantiate(heart, new Vector2(heartSpawnerPos.x, heartSpawnerPos.y), Quaternion.identity);
+            heartArray[i] = heartInst;
+
+            if(i%2 == 0 && i != 0){
+                rightSpace += 1;
+                heartInst.transform.position = new Vector2(heartSpawnerPos.x-rightSpace, heartSpawnerPos.y);
+            }else if(i%2 == 1 && i != 0){
+                leftSpace += 1;
+                heartInst.transform.position = new Vector2(heartSpawnerPos.x+leftSpace, heartSpawnerPos.y);
+            }
+            heartInst.transform.SetParent(heartSpawner.transform);
         }
     }
 
@@ -81,9 +101,7 @@ public class EnemyBehavior : MonoBehaviour
             newDirectionY = speedArray[Random.Range(1, 3)];
         }
 
-        Debug.Log("OLD X = " + oldDirection.x);
         direction = new Vector2(newDirectionX, newDirectionY);
-        Debug.Log("NEW X = " + direction.x);
         // direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
     }
 
@@ -103,6 +121,7 @@ public class EnemyBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(freezeDuration);
 
+        Destroy(heartArray[lives-1]);
         lives -= 1;
         if(lives == 0){
             dieSound.Play();

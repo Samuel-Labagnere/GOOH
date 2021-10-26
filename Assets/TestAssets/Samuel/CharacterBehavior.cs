@@ -55,6 +55,10 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private string scoreText;
     [SerializeField] private AudioSource coinSound;
 
+    // CHANGE ROOM
+    private bool level1TpStepped = false;
+    [SerializeField] private GameObject level1Spawner;
+
     void Start()
     {
         // SET VARS
@@ -106,6 +110,11 @@ public class CharacterBehavior : MonoBehaviour
     public void Interact(InputAction.CallbackContext context){
         if(interactAction.triggered){
             Debug.Log("Interact!");
+            if(level1TpStepped){
+                rb2D.AddForce(new Vector2(0f, 0f));
+                character.transform.position = level1Spawner.transform.position;
+                level1TpStepped = false;
+            }
         }
     }
 
@@ -202,6 +211,18 @@ public class CharacterBehavior : MonoBehaviour
             score += coinValue;
             scoreTxtObject.text = scoreText + score.ToString();
             Destroy(col.gameObject);
+        }
+
+        // CHANGE ROOM
+        if(col.name == "Level1TP"){
+            level1TpStepped = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D col){
+        // CHANGE ROOM
+        if(col.name == "Level1TP"){
+            level1TpStepped = false;
         }
     }
 
