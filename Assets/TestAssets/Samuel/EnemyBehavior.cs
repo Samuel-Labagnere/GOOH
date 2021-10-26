@@ -22,6 +22,10 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private AudioSource hitSound;
     [SerializeField] private AudioSource disappearSound;
     [SerializeField] private AudioSource laughtSound;
+    [SerializeField] private int lives;
+    [SerializeField] private GameObject heart;
+    [SerializeField] private GameObject heartSpawner;
+    [SerializeField] private SpriteRenderer icon;
 
     void Start(){
         enemy = gameObject;
@@ -39,6 +43,9 @@ public class EnemyBehavior : MonoBehaviour
         enemySprite.color = new Color(1f, 1f, 1f, 0f);
 
         invulnerable = false;
+        for(int i=0; i < lives; i++){
+            Instantiate(heart, new Vector2(heartSpawner.transform.localPosition.x, heartSpawner.transform.localPosition.y), Quaternion.identity);
+        }
     }
 
     void Update(){
@@ -96,24 +103,30 @@ public class EnemyBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(freezeDuration);
 
-        col2D.enabled = false;
-        laughtSound.Play();
-        direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
-        speed += runSpeed;
+        lives -= 1;
+        if(lives == 0){
+            dieSound.Play();
+            Destroy(enemy);
+        }else{
+            col2D.enabled = false;
+            laughtSound.Play();
+            direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+            speed += runSpeed;
 
-        yield return new WaitForSeconds(runDuration);
+            yield return new WaitForSeconds(runDuration);
 
-        disappearSound.Play();
-        enemySprite.color = new Color(1f, 1f, 1f, 0f);
-        rb2D.AddForce(new Vector2(0f, 0f));
-        direction = new Vector2(0f, 0f);
-        enemy.transform.position = spawn.transform.position;
-        col2D.enabled = true;
+            disappearSound.Play();
+            enemySprite.color = new Color(1f, 1f, 1f, 0f);
+            rb2D.AddForce(new Vector2(0f, 0f));
+            direction = new Vector2(0f, 0f);
+            enemy.transform.position = spawn.transform.position;
+            col2D.enabled = true;
 
-        yield return new WaitForSeconds(respawnDuration);
+            yield return new WaitForSeconds(respawnDuration);
 
-        invulnerable = false;
-        speed = oldSpeed;
-        direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+            invulnerable = false;
+            speed = oldSpeed;
+            direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+        }
     }
 }
