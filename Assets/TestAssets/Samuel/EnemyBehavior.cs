@@ -18,6 +18,10 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private int freezeDuration;
     [SerializeField] private int runDuration;
     [SerializeField] private int respawnDuration;
+    [SerializeField] private AudioSource dieSound;
+    [SerializeField] private AudioSource hitSound;
+    [SerializeField] private AudioSource disappearSound;
+    [SerializeField] private AudioSource laughtSound;
 
     void Start(){
         enemy = gameObject;
@@ -83,6 +87,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     IEnumerator Run(){
+        hitSound.Play();
         invulnerable = true;
         rb2D.AddForce(new Vector2(0f, 0f));
         direction = new Vector2(0f, 0f);
@@ -92,11 +97,13 @@ public class EnemyBehavior : MonoBehaviour
         yield return new WaitForSeconds(freezeDuration);
 
         col2D.enabled = false;
+        laughtSound.Play();
         direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
         speed += runSpeed;
 
         yield return new WaitForSeconds(runDuration);
 
+        disappearSound.Play();
         enemySprite.color = new Color(1f, 1f, 1f, 0f);
         rb2D.AddForce(new Vector2(0f, 0f));
         direction = new Vector2(0f, 0f);

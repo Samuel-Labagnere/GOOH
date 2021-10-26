@@ -41,12 +41,19 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private GameObject lightCircle;
     [SerializeField] private float lightCircleBaseScale;
     [SerializeField] private float lightCircleModifiedScale;
+    [SerializeField] private AudioSource flashlightToggleSound;
+    [SerializeField] private AudioSource batteryMinusSound;
+    [SerializeField] private AudioSource batteryPlusSound;
+    [SerializeField] private AudioSource flashlightOffSound;
+    [SerializeField] private AudioSource batteryEmptySound;
+    private int nBars;
 
     // COIN
     [SerializeField] private int score;
     [SerializeField] private int coinValue;
     [SerializeField] private Text scoreTxtObject;
     [SerializeField] private string scoreText;
+    [SerializeField] private AudioSource coinSound;
 
     void Start()
     {
@@ -80,12 +87,18 @@ public class CharacterBehavior : MonoBehaviour
 
     public void Flashlight(InputAction.CallbackContext context){
         if(flashlightAction.triggered){
-            if(!flashlight.activeSelf && battery > 0){
-                flashlight.SetActive(true);
-                lightCircle.transform.localScale = new Vector3(lightCircleModifiedScale, lightCircleModifiedScale, 0f);
+            if(battery <= 0){
+                batteryEmptySound.Play();
             }else{
-                flashlight.SetActive(false);
-                lightCircle.transform.localScale = new Vector3(lightCircleBaseScale, lightCircleBaseScale, 0f);
+                if(!flashlight.activeSelf){
+                    flashlight.SetActive(true);
+                    flashlightToggleSound.Play();
+                    lightCircle.transform.localScale = new Vector3(lightCircleModifiedScale, lightCircleModifiedScale, 0f);
+                }else{
+                    flashlight.SetActive(false);
+                    flashlightToggleSound.Play();
+                    lightCircle.transform.localScale = new Vector3(lightCircleBaseScale, lightCircleBaseScale, 0f);
+                }
             }
         }
     }
@@ -143,15 +156,31 @@ public class CharacterBehavior : MonoBehaviour
             battery = batteryMax;
         }
 
+        int previousNBars = nBars;
+
         if(battery >= (batteryMax/3)*2){
             flashlightBars.sprite = flashlight3Bars;
+            nBars = 3;
         }else if(battery >= (batteryMax/3)){
             flashlightBars.sprite = flashlight2Bars;
+            nBars = 2;
         }else if(battery < (batteryMax/3) && battery > 0){
             flashlightBars.sprite = flashlight1Bar;
+            nBars = 1;
         }else{
             flashlightBars.sprite = flashlight0Bar;
+            nBars = 0;
         }
+
+        if(previousNBars > nBars){
+            if(nBars == 0){
+                flashlightOffSound.Play();
+            }else{
+                batteryMinusSound.Play();
+            }
+        }
+
+
 
         // SPRINT
         if(sprintCldn > 0){
@@ -166,8 +195,10 @@ public class CharacterBehavior : MonoBehaviour
         // GAIN BATTERY
         if(col.tag == "Battery"){
             battery += newBattery;
+            batteryPlusSound.Play();
             Destroy(col.gameObject);
         }else if(col.tag == "Coin"){
+            coinSound.Play();
             score += coinValue;
             scoreTxtObject.text = scoreText + score.ToString();
             Destroy(col.gameObject);
