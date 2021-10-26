@@ -392,7 +392,7 @@ MonoBehaviour:
   hitSound: {fileID: 1426228261}
   disappearSound: {fileID: 1446782568}
   laughtSound: {fileID: 264019546}
-  lives: 2
+  lives: 4
   heart: {fileID: 879369357791328294, guid: 17468dd2820eb9744918633d7819e6b6, type: 3}
   heartSpawner: {fileID: 771870415}
   icon: {fileID: 1637923014}
@@ -1411,7 +1411,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04418564, y: -0.040963173}
+  m_Offset: {x: 0.2263813, y: 0.22639656}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1422,8 +1422,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 37.5057, y: 62.478676}
-  m_EdgeRadius: 1
+  m_Size: {x: 37.67573, y: 43.109188}
+  m_EdgeRadius: 0
 --- !u!114 &456066479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2340,7 +2340,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04418564, y: -0.040963173}
+  m_Offset: {x: 0.04418564, y: -0.49374962}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2351,7 +2351,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 37.5057, y: 62.478676}
+  m_Size: {x: 37.5057, y: 42.55604}
   m_EdgeRadius: 0
 --- !u!114 &1353014790
 MonoBehaviour:
@@ -2439,7 +2439,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04418564, y: -0.040963173}
+  m_Offset: {x: 0.04418564, y: -0.2673483}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2450,7 +2450,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 37.5057, y: 62.478676}
+  m_Size: {x: 37.5057, y: 42.10328}
   m_EdgeRadius: 0
 --- !u!114 &1362983051
 MonoBehaviour:
