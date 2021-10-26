@@ -11,7 +11,7 @@ public class EnemyBehavior : MonoBehaviour
     private SpriteRenderer enemySprite;
     private Vector2 randomDirection;
     private bool invulnerable;
-    private BoxCollider2D collider2D;
+    private BoxCollider2D col2D;
     [SerializeField] private Vector2 direction;
     [SerializeField] private GameObject spawn;
     [SerializeField] private float runSpeed;
@@ -29,7 +29,7 @@ public class EnemyBehavior : MonoBehaviour
         randomDirection = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
         direction = randomDirection;
 
-        collider2D = enemy.GetComponent<BoxCollider2D>();
+        col2D = enemy.GetComponent<BoxCollider2D>();
 
         enemySprite = enemy.GetComponent<SpriteRenderer>();
         enemySprite.color = new Color(1f, 1f, 1f, 0f);
@@ -91,7 +91,7 @@ public class EnemyBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(freezeDuration);
 
-        collider2D.enabled = false;
+        col2D.enabled = false;
         direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
         speed += runSpeed;
 
@@ -101,7 +101,7 @@ public class EnemyBehavior : MonoBehaviour
         rb2D.AddForce(new Vector2(0f, 0f));
         direction = new Vector2(0f, 0f);
         enemy.transform.position = spawn.transform.position;
-        collider2D.enabled = true;
+        col2D.enabled = true;
 
         yield return new WaitForSeconds(respawnDuration);
 

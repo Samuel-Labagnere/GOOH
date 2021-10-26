@@ -44,6 +44,7 @@ public class CharacterBehavior : MonoBehaviour
 
     // COIN
     [SerializeField] private int score;
+    [SerializeField] private int coinValue;
     [SerializeField] private Text scoreTxtObject;
     [SerializeField] private string scoreText;
 
@@ -167,7 +168,7 @@ public class CharacterBehavior : MonoBehaviour
             battery += newBattery;
             Destroy(col.gameObject);
         }else if(col.tag == "Coin"){
-            score += 1;
+            score += coinValue;
             scoreTxtObject.text = scoreText + score.ToString();
             Destroy(col.gameObject);
         }
