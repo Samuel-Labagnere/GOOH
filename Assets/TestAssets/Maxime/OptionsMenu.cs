@@ -56,7 +56,6 @@ public class OptionsMenu : MonoBehaviour
     {
         sliderText.text = soundSlider.value + "%";
         PlayerPrefs.SetFloat("volume", soundSlider.value);
-        PlayerPrefs.Save();
         
         upText.text = InputControlPath.ToHumanReadableString(moveAction.bindings[up].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
         leftText.text = InputControlPath.ToHumanReadableString(moveAction.bindings[left].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
