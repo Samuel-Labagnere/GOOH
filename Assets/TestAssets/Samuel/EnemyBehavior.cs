@@ -26,6 +26,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private GameObject heart;
     [SerializeField] private GameObject heartSpawner;
     [SerializeField] private SpriteRenderer icon;
+
+    [SerializeField] private LayerMask rayCastMask;
     private GameObject[] heartArray;
 
     void Start(){
@@ -35,8 +37,8 @@ public class EnemyBehavior : MonoBehaviour
         speedArray[1] = 0f;
         speedArray[2] = 1f;
         // randomDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-        randomDirection = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
-        direction = randomDirection;
+        // randomDirection = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+        // direction = randomDirection;
 
         col2D = enemy.GetComponent<BoxCollider2D>();
 
@@ -69,7 +71,69 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     void Update(){
+        if(!invulnerable){
+            // MOVEMENT
+            Vector2 selfSize = GetComponent<BoxCollider2D>().bounds.size;
+            Vector2[] possibleDirections = new Vector2[8];
 
+            RaycastHit2D upHit = Physics2D.Raycast(enemy.transform.position, new Vector2(0,1), selfSize.y, rayCastMask);
+            RaycastHit2D rightHit = Physics2D.Raycast(enemy.transform.position, new Vector2(1,0), selfSize.x, rayCastMask);
+            RaycastHit2D downHit = Physics2D.Raycast(enemy.transform.position, new Vector2(0,-1), selfSize.y, rayCastMask);
+            RaycastHit2D leftHit = Physics2D.Raycast(enemy.transform.position, new Vector2(-1,0), selfSize.x, rayCastMask);
+
+            Debug.DrawRay(enemy.transform.position, new Vector2(0, selfSize.y));
+            Debug.DrawRay(enemy.transform.position, new Vector2(selfSize.x, 0));
+            Debug.DrawRay(enemy.transform.position, new Vector2(0, -selfSize.y));
+            Debug.DrawRay(enemy.transform.position, new Vector2(-selfSize.x, 0));
+
+            int i = 0;
+            if(upHit.collider == null){
+                possibleDirections[i] = new Vector2(0,1);
+                i += 1;
+            }
+            if(rightHit.collider == null){
+                possibleDirections[i] = new Vector2(1,0);
+                i += 1;
+            }
+            if(downHit.collider == null){
+                possibleDirections[i] = new Vector2(0,-1);
+                i += 1;
+            }
+            if(leftHit.collider == null){
+                possibleDirections[i] = new Vector2(-1,0);
+                i += 1;
+            }
+
+            if(upHit.collider == null && rightHit.collider == null){
+                possibleDirections[i] = new Vector2(1,1);
+                i += 1;
+            }
+            if(upHit.collider == null && leftHit.collider == null){
+                possibleDirections[i] = new Vector2(-1,1);
+                i += 1;
+            }
+            if(downHit.collider == null && rightHit.collider == null){
+                possibleDirections[i] = new Vector2(1,-1);
+                i += 1;
+            }
+            if(downHit.collider == null && leftHit.collider == null){
+                possibleDirections[i] = new Vector2(-1,-1);
+                i += 1;
+            }
+
+            bool keepGoing = false;
+            for(int j = 0; j < i; j++) 
+            {
+                if(possibleDirections[j] == direction){
+                    keepGoing = true;
+                    break;
+                }
+            }
+
+            if(!keepGoing){
+                direction = possibleDirections[Random.Range(0, i)];
+            }
+        }
     }
 
     void FixedUpdate(){
@@ -82,28 +146,28 @@ public class EnemyBehavior : MonoBehaviour
         rb2D.MovePosition(newPos);
     }
 
-    void OnCollisionEnter2D(Collision2D col){
-        // Debug.Log("Collision!");
-        Vector2 oldDirection = direction;
-        float newDirectionX = 0f;
-        float newDirectionY = 0f;
-        rb2D.AddForce(new Vector2(0f, 0f));
+    // void OnCollisionEnter2D(Collision2D col){
+    //     // Debug.Log("Collision!");
+    //     Vector2 oldDirection = direction;
+    //     float newDirectionX = 0f;
+    //     float newDirectionY = 0f;
+    //     rb2D.AddForce(new Vector2(0f, 0f));
 
-        if(oldDirection.x == 1f){
-            newDirectionX = speedArray[Random.Range(0, 2)];
-        }else if(oldDirection.x == -1f){ 
-            newDirectionX = speedArray[Random.Range(1, 3)]; 
-        }
+    //     if(oldDirection.x == 1f){
+    //         newDirectionX = speedArray[Random.Range(0, 2)];
+    //     }else if(oldDirection.x == -1f){ 
+    //         newDirectionX = speedArray[Random.Range(1, 3)]; 
+    //     }
 
-        if(oldDirection.y == 1f){
-            newDirectionY = speedArray[Random.Range(0, 2)];
-        }else if(oldDirection.y == -1f){
-            newDirectionY = speedArray[Random.Range(1, 3)];
-        }
+    //     if(oldDirection.y == 1f){
+    //         newDirectionY = speedArray[Random.Range(0, 2)];
+    //     }else if(oldDirection.y == -1f){
+    //         newDirectionY = speedArray[Random.Range(1, 3)];
+    //     }
 
-        direction = new Vector2(newDirectionX, newDirectionY);
-        // direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
-    }
+    //     direction = new Vector2(newDirectionX, newDirectionY);
+    //     // direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+    // }
 
     void OnTriggerEnter2D(Collider2D col){
         if(col.tag == "Flashlight" && !invulnerable){
@@ -130,6 +194,9 @@ public class EnemyBehavior : MonoBehaviour
             col2D.enabled = false;
             laughtSound.Play();
             direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+            if(direction == new Vector2(0,0)){
+                direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+            }
             speed += runSpeed;
 
             yield return new WaitForSeconds(runDuration);

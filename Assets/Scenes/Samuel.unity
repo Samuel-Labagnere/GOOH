@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 83199539}
   - component: {fileID: 83199538}
   - component: {fileID: 83199537}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -478,6 +478,9 @@ MonoBehaviour:
   heart: {fileID: 879369357791328294, guid: 17468dd2820eb9744918633d7819e6b6, type: 3}
   heartSpawner: {fileID: 771870415}
   icon: {fileID: 1637923014}
+  rayCastMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!61 &97947303
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -603,7 +606,7 @@ GameObject:
   - component: {fileID: 173117506}
   - component: {fileID: 173117505}
   - component: {fileID: 173117504}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Borders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1322,7 +1325,7 @@ GameObject:
   - component: {fileID: 379691422}
   - component: {fileID: 379691421}
   - component: {fileID: 379691420}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1420,7 +1423,7 @@ GameObject:
   - component: {fileID: 382220063}
   - component: {fileID: 382220065}
   - component: {fileID: 382220064}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Corners
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3483,7 +3486,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401937796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 35.19, y: -4.65, z: 0}
+  m_LocalPosition: {x: -0, y: -3.49, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 213521561}
