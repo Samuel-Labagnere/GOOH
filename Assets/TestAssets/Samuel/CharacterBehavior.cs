@@ -117,7 +117,7 @@ public class CharacterBehavior : MonoBehaviour
 
     public void Interact(InputAction.CallbackContext context){
         if(interactAction.triggered){
-            Debug.Log("Interact!");
+            // Debug.Log("Interact!");
             if(level1TpStepped){
                 rb2D.AddForce(new Vector2(0f, 0f));
                 character.transform.position = level1Spawner.transform.position;
