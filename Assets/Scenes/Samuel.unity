@@ -2653,7 +2653,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 509, y: -498}
+  m_AnchoredPosition: {x: 459.1, y: -498}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &999467067
@@ -3382,12 +3382,12 @@ MonoBehaviour:
   walkSound: {fileID: 543746513}
   battery: 100
   batteryMax: 100
-  batterySpeed: 1
+  batterySpeed: 8
   flashlightBars: {fileID: 1905209922}
-  flashlight3Bars: {fileID: 21300000, guid: f220bd735d6cbc64b895575d424e7e98, type: 3}
-  flashlight2Bars: {fileID: 21300000, guid: 05516612b9ae05c4793d3f8cbb12cd9f, type: 3}
-  flashlight1Bar: {fileID: 21300000, guid: c7139d5acbb64964fb6932fce0f7ede9, type: 3}
-  flashlight0Bar: {fileID: 21300000, guid: 6a2697bcd60fdec45aed159360340ee6, type: 3}
+  flashlight3Bars: {fileID: 21300000, guid: 2eaf5aeef9336ba49ba73de137847408, type: 3}
+  flashlight2Bars: {fileID: 21300000, guid: eab5ba161bb184948affa0d99f1ef2e4, type: 3}
+  flashlight1Bar: {fileID: 21300000, guid: 219873db20cb02048ab1c8c8c64a879d, type: 3}
+  flashlight0Bar: {fileID: 21300000, guid: 6b5ac1a9d26fe40419dd088d17cb7f65, type: 3}
   lightCircle: {fileID: 306076513}
   lightCircleBaseScale: 1
   lightCircleModifiedScale: 2
@@ -4541,7 +4541,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: f220bd735d6cbc64b895575d424e7e98, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2eaf5aeef9336ba49ba73de137847408, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4560,8 +4560,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1905209921}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 722.4402, y: -479.47256, z: -9720}
-  m_LocalScale: {x: 108, y: 108, z: 108}
+  m_LocalPosition: {x: 739, y: -475, z: -9720}
+  m_LocalScale: {x: 500, y: 500, z: 108}
   m_Children: []
   m_Father: {fileID: 318064488}
   m_RootOrder: 1
