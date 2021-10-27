@@ -59,10 +59,6 @@ public class CharacterBehavior : MonoBehaviour
     private bool level1TpStepped = false;
     [SerializeField] private GameObject level1Spawner;
 
-    // TEXTS
-    [SerializeField] private Text levelText;
-    [SerializeField] private Text interactText;
-
     void Start()
     {
         // SET VARS
@@ -87,10 +83,6 @@ public class CharacterBehavior : MonoBehaviour
         flashlightAction.Enable();
         interactAction.Enable();
         sprintAction.Enable();
-
-        // TEXTS
-        levelText.text = "";
-        interactText.text = "";
     }
 
     public void Move(InputAction.CallbackContext context){
@@ -224,8 +216,6 @@ public class CharacterBehavior : MonoBehaviour
         // CHANGE ROOM
         if(col.name == "Level1TP"){
             level1TpStepped = true;
-            levelText.text = "<To level 1>";
-            interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
         }
     }
 
@@ -233,8 +223,6 @@ public class CharacterBehavior : MonoBehaviour
         // CHANGE ROOM
         if(col.name == "Level1TP"){
             level1TpStepped = false;
-            levelText.text = "";
-            interactText.text = "";
         }
     }
 
