@@ -71,6 +71,12 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     void Update(){
+        // SOUNDS
+        dieSound.volume = PlayerPrefs.GetFloat("volume");
+        hitSound.volume = PlayerPrefs.GetFloat("volume");
+        disappearSound.volume = PlayerPrefs.GetFloat("volume");
+        laughtSound.volume = PlayerPrefs.GetFloat("volume");
+
         if(!invulnerable){
             // MOVEMENT
             Vector2 selfSize = GetComponent<BoxCollider2D>().bounds.size;

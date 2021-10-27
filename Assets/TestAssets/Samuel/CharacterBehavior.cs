@@ -160,6 +160,15 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     void Update(){
+        // SOUNDS
+        walkSound.volume = PlayerPrefs.GetFloat("volume");
+        flashlightToggleSound.volume = PlayerPrefs.GetFloat("volume");
+        batteryMinusSound.volume = PlayerPrefs.GetFloat("volume");
+        batteryPlusSound.volume = PlayerPrefs.GetFloat("volume");
+        flashlightOffSound.volume = PlayerPrefs.GetFloat("volume");
+        batteryEmptySound.volume = PlayerPrefs.GetFloat("volume");
+        coinSound.volume = PlayerPrefs.GetFloat("volume");
+        
         // FLASHLIGHT
         if(flashlight.activeSelf){
             battery -= Time.deltaTime * batterySpeed;
