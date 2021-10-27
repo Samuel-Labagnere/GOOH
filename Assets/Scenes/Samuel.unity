@@ -3355,6 +3355,7 @@ GameObject:
   - component: {fileID: 1401937797}
   - component: {fileID: 1401937801}
   - component: {fileID: 1401937802}
+  - component: {fileID: 1401937803}
   m_Layer: 0
   m_Name: character
   m_TagString: Player
@@ -3379,6 +3380,7 @@ MonoBehaviour:
   sprintDuration: 1
   sprintCooldown: 5
   walkSound: {fileID: 543746513}
+  animCharacter: {fileID: 1401937803}
   battery: 100
   batteryMax: 100
   batterySpeed: 8
@@ -3463,8 +3465,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ff9c1a269ffb7ff438f6d59fbc835d05, type: 3}
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 21300000, guid: bd1fbf5fc748b784fbef505635268e3a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3483,7 +3485,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401937796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.5, y: -2.9, z: 0}
+  m_LocalPosition: {x: 35.216, y: -4.465, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 213521561}
@@ -3611,6 +3613,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1766119, y: 0.25034738}
   m_EdgeRadius: 0
+--- !u!95 &1401937803
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401937796}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 85a2a30fce00c81488dc8a4fb4b11542, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1426228259
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,6 +28,9 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private AudioSource walkSound;
     private float sprintCldn;
 
+    // ANIMATOR
+    [SerializeField] private Animator animCharacter;
+
     // BATTERY
     [SerializeField] private float battery;
     [SerializeField] private float batteryMax;
@@ -136,21 +139,28 @@ public class CharacterBehavior : MonoBehaviour
         // CONTROLS
         Vector2 newPos = rb2D.position;
 
+        animCharacter.SetFloat("MoveY", move.y);
+        animCharacter.SetFloat("MoveX", move.x);
+
             if (move.x < 0f) // LEFT
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.left;
+                animCharacter.SetTrigger("Left");
             }
             if (move.x > 0f) // RIGHT
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.right;
+                animCharacter.SetTrigger("Right");
             }
             if (move.y > 0f) // UP
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.up;
+                animCharacter.SetTrigger("Up");
             }
             if (move.y < 0f) // DOWN
             {
                 newPos += Time.fixedDeltaTime * speed * Vector2.down;
+                animCharacter.SetTrigger("Down");
             }
 
             if(newPos != rb2D.position && !walkSound.isPlaying){
