@@ -56,6 +56,7 @@ public class CharacterBehavior : MonoBehaviour
     // COIN
     [SerializeField] private int score;
     [SerializeField] private int coinValue;
+    [SerializeField] private int coinsValue;
     [SerializeField] private Text scoreTxtObject;
     [SerializeField] private string scoreText;
     [SerializeField] private AudioSource coinSound;
@@ -281,6 +282,11 @@ public class CharacterBehavior : MonoBehaviour
         }else if(col.tag == "Coin"){
             coinSound.Play();
             score += coinValue;
+            scoreTxtObject.text = scoreText + score.ToString();
+            Destroy(col.gameObject);
+        }else if(col.tag == "Coins"){
+            coinSound.Play();
+            score += coinsValue;
             scoreTxtObject.text = scoreText + score.ToString();
             Destroy(col.gameObject);
         }

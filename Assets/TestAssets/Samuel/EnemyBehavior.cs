@@ -200,7 +200,7 @@ public class EnemyBehavior : MonoBehaviour
         if(direction == new Vector2(0f, 0f) && !invulnerable){
             direction = new Vector2(speedArray[Random.Range(0, 2)], Random.Range(0, 2));
         }
-        if(!invulnerable && isAbleToMove){
+        if(isAbleToMove){
             rb2D.MovePosition(newPos);
         }
     }

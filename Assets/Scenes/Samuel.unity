@@ -4460,6 +4460,7 @@ MonoBehaviour:
   batteryEmptySound: {fileID: 57596017}
   score: 0
   coinValue: 10
+  coinsValue: 50
   scoreTxtObject: {fileID: 999467067}
   scoreText: 'Coins: '
   coinSound: {fileID: 1275028796}
