@@ -71,10 +71,25 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private Text levelText;
     [SerializeField] private Text interactText;
 
+    // SPRITES
+    private SpriteRenderer characterSprite;
+    [SerializeField] private Sprite upSprite1;
+    [SerializeField] private Sprite upSprite2;
+    [SerializeField] private Sprite upSprite3;
+    [SerializeField] private Sprite downSprite1;
+    [SerializeField] private Sprite downSprite2;
+    [SerializeField] private Sprite downSprite3;
+    [SerializeField] private Sprite leftSprite1;
+    [SerializeField] private Sprite leftSprite2;
+    [SerializeField] private Sprite rightSprite1;
+    [SerializeField] private Sprite rightSprite2;
+
+
     void Start()
     {
         // SET VARS
         character = gameObject;
+        characterSprite = character.GetComponent<SpriteRenderer>();
         flashlight = character.transform.GetChild(0).gameObject;
         flashlight.SetActive(false);
         newBattery = batteryMax/3;
@@ -185,8 +200,31 @@ public class CharacterBehavior : MonoBehaviour
         batteryEmptySound.volume = PlayerPrefs.GetFloat("volume") / 4f;
         coinSound.volume = PlayerPrefs.GetFloat("volume");
         music.volume = PlayerPrefs.GetFloat("volume");
-        
-        // FLASHLIGHT
+
+        // SPRITES
+        if(characterSprite.sprite == upSprite1 || characterSprite.sprite == upSprite2 || characterSprite.sprite == upSprite3){
+            Vector3 temp = transform.rotation.eulerAngles;
+            temp.z = 90f;
+            flashlight.transform.rotation = Quaternion.Euler(temp);
+            flashlight.transform.localPosition = new Vector2(0.088f, 0.2f);
+        }else if(characterSprite.sprite == downSprite1 || characterSprite.sprite == downSprite2 || characterSprite.sprite == downSprite3){
+            Vector3 temp = transform.rotation.eulerAngles;
+            temp.z = -90f;
+            flashlight.transform.rotation = Quaternion.Euler(temp);
+            flashlight.transform.localPosition = new Vector2(-0.078f, -0.34f);
+        }else if(characterSprite.sprite == leftSprite1 || characterSprite.sprite == leftSprite2){
+            Vector3 temp = transform.rotation.eulerAngles;
+            temp.z = 180f;
+            flashlight.transform.rotation = Quaternion.Euler(temp);
+            flashlight.transform.localPosition = new Vector2(-0.324f, -0.093f);
+        }else if(characterSprite.sprite == rightSprite1 || characterSprite.sprite == rightSprite2){
+            Vector3 temp = transform.rotation.eulerAngles;
+            temp.z = 0f;
+            flashlight.transform.rotation = Quaternion.Euler(temp);
+            flashlight.transform.localPosition = new Vector2(0.334f, -0.075f);
+        }
+
+        //FLASHLIGHT
         if(flashlight.activeSelf){
             battery -= Time.deltaTime * batterySpeed;
             if(battery <= 0){

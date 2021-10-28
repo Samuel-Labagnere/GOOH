@@ -4469,6 +4469,16 @@ MonoBehaviour:
   isOnLevel3: 0
   levelText: {fileID: 1181519276}
   interactText: {fileID: 457850298}
+  upSprite1: {fileID: 21300000, guid: bd1fbf5fc748b784fbef505635268e3a, type: 3}
+  upSprite2: {fileID: 21300000, guid: b1aa2fe4e72222545ada350defe94ca9, type: 3}
+  upSprite3: {fileID: 21300000, guid: 600126451469133419165db3d8d5b591, type: 3}
+  downSprite1: {fileID: 21300000, guid: 76151ce2b15f77d4fb0a3333ff97a650, type: 3}
+  downSprite2: {fileID: 21300000, guid: 6c49e8dde1bde9d4ba3c6ec27463b71d, type: 3}
+  downSprite3: {fileID: 21300000, guid: d9f24ce4097434e4ea9252747d2659eb, type: 3}
+  leftSprite1: {fileID: 21300000, guid: 7cb443ae5c81bd8498f48c6eb00a60ad, type: 3}
+  leftSprite2: {fileID: 21300000, guid: c90d2af6d2dc53847a944322dfcdddea, type: 3}
+  rightSprite1: {fileID: 21300000, guid: a8c85b96aa4519d479d7b1d4b7f7b88f, type: 3}
+  rightSprite2: {fileID: 21300000, guid: f50b78be42200384889e47d45e06e080, type: 3}
 --- !u!50 &1401937798
 Rigidbody2D:
   serializedVersion: 4
