@@ -656,7 +656,7 @@ GameObject:
   m_Component:
   - component: {fileID: 116372982}
   - component: {fileID: 116372983}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RedZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1029,7 +1029,7 @@ GameObject:
   m_Component:
   - component: {fileID: 192430508}
   - component: {fileID: 192430509}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Level1TP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1193,7 +1193,7 @@ GameObject:
   - component: {fileID: 213521561}
   - component: {fileID: 213521562}
   - component: {fileID: 213521563}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: beam
   m_TagString: Flashlight
   m_Icon: {fileID: 0}
@@ -2868,7 +2868,7 @@ GameObject:
   m_Component:
   - component: {fileID: 653464625}
   - component: {fileID: 653464626}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OrangeZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
