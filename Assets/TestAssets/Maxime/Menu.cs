@@ -10,6 +10,9 @@ public class Menu : MonoBehaviour
 {
     [SerializeField] private GameObject optionMenu;
     [SerializeField] private GameObject homeMenu;
+    [SerializeField] private float menuAnimDuration;
+    private bool menuAnim;
+    private float i;
     [SerializeField] private GameObject optionSelector;
     [SerializeField] private GameObject homeSelector;
     [SerializeField] private GameObject soundSelector;
@@ -17,6 +20,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private AudioSource moveSound;
     [SerializeField] private AudioSource sliderSound;
     [SerializeField] private AudioSource confirmSound;
+    [SerializeField] private AudioSource menuMusic;
     [SerializeField] private Text upText;
     [SerializeField] private Text leftText;
     [SerializeField] private Text downText;
@@ -41,6 +45,11 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        menuAnim = false;
+        i = 0;
+        homeMenu.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        homeSelector.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+
         optionMenu.SetActive(false);
 
         homeSelector.transform.position = new Vector2(0f, 0.27f);
@@ -69,9 +78,19 @@ public class Menu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!menuAnim){
+            i += Time.deltaTime;
+            homeMenu.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, i/menuAnimDuration);
+            homeSelector.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, i/menuAnimDuration);
+            if(i/menuAnimDuration >= 1){
+                menuAnim = true;
+            }
+        }
+
         moveSound.volume = PlayerPrefs.GetFloat("volume");
         sliderSound.volume = PlayerPrefs.GetFloat("volume");
         confirmSound.volume = PlayerPrefs.GetFloat("volume");
+        menuMusic.volume = PlayerPrefs.GetFloat("volume");
 
         sliderText.text = soundSlider.value + "%";
         PlayerPrefs.SetFloat("volume", soundSlider.value/100);
