@@ -12,6 +12,8 @@ TagManager:
   - Level2
   - Level3
   - Coins
+  - Ceramic
+  - Window
   layers:
   - Default
   - TransparentFX
