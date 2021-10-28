@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    public CharacterBehavior characterScript;
     [SerializeField] private float speed;
     private float[] speedArray = new float[3];
     private Rigidbody2D rb2D;
@@ -12,8 +13,10 @@ public class EnemyBehavior : MonoBehaviour
     private Vector2 randomDirection;
     private bool invulnerable;
     private BoxCollider2D col2D;
+    [SerializeField] private int enemyNb;
     [SerializeField] private Vector2 direction;
     [SerializeField] private GameObject spawn;
+    [SerializeField] private GameObject EnemyStats;
     [SerializeField] private float runSpeed;
     [SerializeField] private int freezeDuration;
     [SerializeField] private int runDuration;
@@ -31,6 +34,9 @@ public class EnemyBehavior : MonoBehaviour
     private GameObject[] heartArray;
 
     void Start(){
+
+        EnemyStats.SetActive(false);
+
         enemy = gameObject;
         rb2D = enemy.GetComponent<Rigidbody2D>();
         speedArray[0] = -1f;
@@ -45,7 +51,7 @@ public class EnemyBehavior : MonoBehaviour
         enemySprite = enemy.GetComponent<SpriteRenderer>();
         enemySprite.color = new Color(1f, 1f, 1f, 0f);
 
-        invulnerable = false;
+        invulnerable = true;
         int rightSpace = 0;
         int leftSpace = 0;
         heartArray = new GameObject[lives];
@@ -71,6 +77,20 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     void Update(){
+        // CHARACTER BEHAVIOR
+        if(characterScript.isOnLevel1 && enemyNb == 1){
+            invulnerable = false;
+            EnemyStats.SetActive(true);
+        }else if(characterScript.isOnLevel2 && enemyNb == 2){
+            invulnerable = false;
+            EnemyStats.SetActive(true);
+        }else if(characterScript.isOnLevel3 && enemyNb == 3){
+            invulnerable = false;
+            EnemyStats.SetActive(true);
+        }else{
+            EnemyStats.SetActive(false);
+        }
+
         // SOUNDS
         dieSound.volume = PlayerPrefs.GetFloat("volume");
         hitSound.volume = PlayerPrefs.GetFloat("volume");
@@ -221,4 +241,6 @@ public class EnemyBehavior : MonoBehaviour
             direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
         }
     }
+
+    
 }
