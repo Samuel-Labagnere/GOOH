@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour
 {
     public CharacterBehavior characterScript;
+    private bool isAbleToMove;
     [SerializeField] private float speed;
     private float[] speedArray = new float[3];
     private Rigidbody2D rb2D;
@@ -33,6 +34,22 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private LayerMask rayCastMask;
     private GameObject[] heartArray;
 
+    // MOVEMENT
+    [SerializeField] private Sprite upSprite;
+    [SerializeField] private Sprite downSprite;
+    [SerializeField] private Sprite leftSprite;
+    [SerializeField] private Sprite rightSprite;
+
+    // DETECTOR
+    [SerializeField] private SpriteRenderer detector;
+    [SerializeField] private Sprite detectorNeutral;
+    [SerializeField] private Sprite detectorOrange;
+    [SerializeField] private Sprite detectorRed;
+    [SerializeField] private BoxCollider2D orangeZone;
+    [SerializeField] private BoxCollider2D redZone;
+    [SerializeField] private AudioSource ledSound;
+    [SerializeField] private AudioSource alertSound;
+
     void Start(){
 
         EnemyStats.SetActive(false);
@@ -51,7 +68,8 @@ public class EnemyBehavior : MonoBehaviour
         enemySprite = enemy.GetComponent<SpriteRenderer>();
         enemySprite.color = new Color(1f, 1f, 1f, 0f);
 
-        invulnerable = true;
+        isAbleToMove = false;
+        invulnerable = false;
         int rightSpace = 0;
         int leftSpace = 0;
         heartArray = new GameObject[lives];
@@ -79,16 +97,27 @@ public class EnemyBehavior : MonoBehaviour
     void Update(){
         // CHARACTER BEHAVIOR
         if(characterScript.isOnLevel1 && enemyNb == 1){
-            invulnerable = false;
+            isAbleToMove = true;
             EnemyStats.SetActive(true);
         }else if(characterScript.isOnLevel2 && enemyNb == 2){
-            invulnerable = false;
+            isAbleToMove = true;
             EnemyStats.SetActive(true);
         }else if(characterScript.isOnLevel3 && enemyNb == 3){
-            invulnerable = false;
+            isAbleToMove = true;
             EnemyStats.SetActive(true);
         }else{
             EnemyStats.SetActive(false);
+        }
+
+        // MOVEMENT
+        if(direction.y > 0f){
+            enemySprite.sprite = upSprite;
+        }else if(direction.y < 0f){
+            enemySprite.sprite = downSprite;
+        }else if(direction.x > 0f){
+            enemySprite.sprite = rightSprite;
+        }else if(direction.x < 0f){
+            enemySprite.sprite = leftSprite;
         }
 
         // SOUNDS
@@ -96,8 +125,10 @@ public class EnemyBehavior : MonoBehaviour
         hitSound.volume = PlayerPrefs.GetFloat("volume");
         disappearSound.volume = PlayerPrefs.GetFloat("volume");
         laughtSound.volume = PlayerPrefs.GetFloat("volume");
+        ledSound.volume = PlayerPrefs.GetFloat("volume");
+        alertSound.volume = PlayerPrefs.GetFloat("volume");
 
-        if(!invulnerable){
+        if(!invulnerable && isAbleToMove){
             // MOVEMENT
             Vector2 selfSize = GetComponent<BoxCollider2D>().bounds.size;
             Vector2[] possibleDirections = new Vector2[8];
@@ -169,7 +200,9 @@ public class EnemyBehavior : MonoBehaviour
         if(direction == new Vector2(0f, 0f) && !invulnerable){
             direction = new Vector2(speedArray[Random.Range(0, 2)], Random.Range(0, 2));
         }
-        rb2D.MovePosition(newPos);
+        if(!invulnerable && isAbleToMove){
+            rb2D.MovePosition(newPos);
+        }
     }
 
     // void OnCollisionEnter2D(Collision2D col){
@@ -199,6 +232,31 @@ public class EnemyBehavior : MonoBehaviour
         if(col.tag == "Flashlight" && !invulnerable){
             StartCoroutine("Run");
         }
+
+        // DETECTOR
+        if(col == orangeZone && col != redZone){
+            detector.sprite = detectorOrange;
+            ledSound.Play();
+        }else if(col == redZone){
+            detector.sprite = detectorRed;
+            ledSound.Play();
+            alertSound.Play();
+        }else{
+            detector.sprite = detectorNeutral;
+            ledSound.Play();
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D col){
+        // DETECTOR
+        if(col == redZone){
+            detector.sprite = detectorOrange;
+            ledSound.Play();
+            alertSound.Stop();
+        }if(col == orangeZone){
+            detector.sprite = detectorNeutral;
+            ledSound.Play();
+        }
     }
 
     IEnumerator Run(){
@@ -215,6 +273,7 @@ public class EnemyBehavior : MonoBehaviour
         lives -= 1;
         if(lives == 0){
             dieSound.Play();
+            EnemyStats.SetActive(false);
             Destroy(enemy);
         }else{
             col2D.enabled = false;
