@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Thunder : MonoBehaviour
+public class Events : MonoBehaviour
 {
     [SerializeField] private AudioSource thunder;
      [SerializeField] private float thunderDelay;
@@ -16,32 +16,33 @@ public class Thunder : MonoBehaviour
         windows.SetActive(false);
         thunderPlay = false;
     }
-
     
     void FixedUpdate(){
 
     }
     // Update is called once per frame
     void Update()
-    {
-        //PlayerPrefs.GetFloat("volume")
-        thunder.volume = 0.5f;
-        
-         if(!thunder.isPlaying){
-             StartCoroutine("ThunderCoroutine");
-            if(thunderPlay && !thunder.isPlaying){
-                thunder.Play(0);
+    {   
+        thunder.volume = PlayerPrefs.GetFloat("volume");
+         if(thunderPlay == false){
+            StartCoroutine("ThunderCoroutine");
+            if(thunderPlay == true){
+                thunder.Play();
+                windows.SetActive(false);
             }
-            windows.SetActive(false);
-        }else{
             windows.SetActive(true);
         }
+
     }
 
     IEnumerator ThunderCoroutine(){
         yield return new WaitForSeconds(thunderDelay);
         thunderPlay = true;
-        yield return new WaitForSeconds(0.1f);
+        Debug.Log(thunderPlay);
+        yield return new WaitForSeconds(5f);
         thunderPlay = false;
+        Debug.Log(thunderPlay);
+
+
     }
 }
