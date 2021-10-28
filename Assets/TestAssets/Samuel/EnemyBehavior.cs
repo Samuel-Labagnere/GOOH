@@ -50,6 +50,9 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private AudioSource ledSound;
     [SerializeField] private AudioSource alertSound;
 
+    // DOOR
+    [SerializeField] private AudioSource doorLock;
+
     void Start(){
 
         EnemyStats.SetActive(false);
@@ -125,8 +128,8 @@ public class EnemyBehavior : MonoBehaviour
         hitSound.volume = PlayerPrefs.GetFloat("volume");
         disappearSound.volume = PlayerPrefs.GetFloat("volume");
         laughtSound.volume = PlayerPrefs.GetFloat("volume");
-        ledSound.volume = PlayerPrefs.GetFloat("volume");
-        alertSound.volume = PlayerPrefs.GetFloat("volume");
+        ledSound.volume = PlayerPrefs.GetFloat("volume")/4f;
+        alertSound.volume = PlayerPrefs.GetFloat("volume")/4f;
 
         if(!invulnerable && isAbleToMove){
             // MOVEMENT
@@ -274,6 +277,14 @@ public class EnemyBehavior : MonoBehaviour
         if(lives == 0){
             dieSound.Play();
             EnemyStats.SetActive(false);
+            if(enemyNb == 1){
+                characterScript.level1Done = true;
+            }else if(enemyNb == 2){
+                characterScript.level2Done = true;
+            }else if(enemyNb == 3){
+                characterScript.level3Done = true;
+            }
+            doorLock.Play();
             Destroy(enemy);
         }else{
             col2D.enabled = false;

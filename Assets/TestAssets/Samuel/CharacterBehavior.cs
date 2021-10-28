@@ -62,8 +62,25 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private AudioSource coinSound;
 
     // CHANGE ROOM
+    [SerializeField] private AudioSource doorOpen;
+    [SerializeField] private AudioSource doorClose;
+    [SerializeField] private AudioSource doorLock;
+    [SerializeField] private AudioSource enemyLaugh;
     private bool level1TpStepped = false;
+    private bool level2TpStepped = false;
+    private bool level3TpStepped = false;
+    private bool level1TpBackStepped = false;
+    private bool level2TpBackStepped = false;
+    private bool level3TpBackStepped = false;
+    public bool level1Done = false;
+    public bool level2Done = false;
+    public bool level3Done = false;
     [SerializeField] private GameObject level1Spawner;
+    [SerializeField] private GameObject level2Spawner;
+    [SerializeField] private GameObject level3Spawner;
+    [SerializeField] private GameObject hallSpawnerFromLevel1;
+    [SerializeField] private GameObject hallSpawnerFromLevel2;
+    [SerializeField] private GameObject hallSpawnerFromLevel3;
     public bool isOnLevel1;
     public bool isOnLevel2;
     public bool isOnLevel3;
@@ -85,6 +102,8 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private Sprite rightSprite1;
     [SerializeField] private Sprite rightSprite2;
 
+    // DEATH
+    private bool isAbleToMove = true;
 
     void Start()
     {
@@ -119,7 +138,9 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     public void Move(InputAction.CallbackContext context){
-        move = context.ReadValue<Vector2>();
+        if(isAbleToMove){
+            move = context.ReadValue<Vector2>();
+        }
     }
 
     public void Flashlight(InputAction.CallbackContext context){
@@ -147,6 +168,37 @@ public class CharacterBehavior : MonoBehaviour
                 rb2D.AddForce(new Vector2(0f, 0f));
                 character.transform.position = level1Spawner.transform.position;
                 level1TpStepped = false;
+                StartCoroutine("DoorToLevel");
+            }
+            if(level2TpStepped){
+                rb2D.AddForce(new Vector2(0f, 0f));
+                character.transform.position = level2Spawner.transform.position;
+                level2TpStepped = false;
+                StartCoroutine("DoorToLevel");
+            }
+            if(level3TpStepped){
+                rb2D.AddForce(new Vector2(0f, 0f));
+                character.transform.position = level3Spawner.transform.position;
+                level3TpStepped = false;
+                StartCoroutine("DoorToLevel");
+            }
+            if(level1TpBackStepped){
+                rb2D.AddForce(new Vector2(0f, 0f));
+                character.transform.position = hallSpawnerFromLevel1.transform.position;
+                level1TpBackStepped = false;
+                StartCoroutine("DoorFromLevel");
+            }
+            if(level2TpBackStepped){
+                rb2D.AddForce(new Vector2(0f, 0f));
+                character.transform.position = hallSpawnerFromLevel2.transform.position;
+                level2TpBackStepped = false;
+                StartCoroutine("DoorFromLevel");
+            }
+            if(level3TpBackStepped){
+                rb2D.AddForce(new Vector2(0f, 0f));
+                character.transform.position = hallSpawnerFromLevel3.transform.position;
+                level3TpBackStepped = false;
+                StartCoroutine("DoorFromLevel");
             }
         }
     }
@@ -292,9 +344,34 @@ public class CharacterBehavior : MonoBehaviour
         }
 
         // CHANGE ROOM
-        if(col.name == "Level1TP"){
+        if(col.name == "Level1TP" && !level1Done){
             level1TpStepped = true;
             levelText.text = "<To level 1>";
+            interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
+        }
+        if(col.name == "Level2TP" && !level2Done && level1Done){
+            level2TpStepped = true;
+            levelText.text = "<To level 2>";
+            interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
+        }
+        if(col.name == "Level3TP" && !level3Done && level2Done){
+            level3TpStepped = true;
+            levelText.text = "<To level 3>";
+            interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
+        }
+        if(col.name == "Level1TPBack" && level1Done){
+            level1TpBackStepped = true;
+            levelText.text = "<Back to hall>";
+            interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
+        }
+        if(col.name == "Level2TPBack" && level2Done){
+            level2TpBackStepped = true;
+            levelText.text = "<Back to hall>";
+            interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
+        }
+        if(col.name == "Level3TPBack" && level3Done){
+            level3TpBackStepped = true;
+            levelText.text = "<Back to hall>";
             interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
         }
         if(col.tag == "Level1"){
@@ -306,12 +383,42 @@ public class CharacterBehavior : MonoBehaviour
         if(col.tag == "Level3"){
             isOnLevel3 = true;
         }
+
+        // DEATH
+        if(col.gameObject.layer == 10){
+            StartCoroutine("Death");
+        }
     }
 
     void OnTriggerExit2D(Collider2D col){
         // CHANGE ROOM
         if(col.name == "Level1TP"){
             level1TpStepped = false;
+            levelText.text = "";
+            interactText.text = "";
+        }
+        if(col.name == "Level2TP"){
+            level2TpStepped = false;
+            levelText.text = "";
+            interactText.text = "";
+        }
+        if(col.name == "Level3TP"){
+            level3TpStepped = false;
+            levelText.text = "";
+            interactText.text = "";
+        }
+        if(col.name == "Level1TPBack"){
+            level1TpStepped = false;
+            levelText.text = "";
+            interactText.text = "";
+        }
+        if(col.name == "Level2TPBack"){
+            level2TpStepped = false;
+            levelText.text = "";
+            interactText.text = "";
+        }
+        if(col.name == "Level3TPBack"){
+            level3TpStepped = false;
             levelText.text = "";
             interactText.text = "";
         }
@@ -333,5 +440,29 @@ public class CharacterBehavior : MonoBehaviour
             yield return new WaitForSeconds(sprintDuration);
             speed -= sprintSpeed;
         }
+    }
+
+    IEnumerator DoorToLevel(){
+        doorOpen.Play();
+        yield return new WaitForSeconds(doorOpen.clip.length);
+        doorClose.Play();
+        yield return new WaitForSeconds(doorClose.clip.length);
+        doorLock.Play();
+        enemyLaugh.Play();
+    }
+
+    IEnumerator DoorFromLevel(){
+        doorOpen.Play();
+        yield return new WaitForSeconds(doorOpen.clip.length);
+        doorClose.Play();
+        yield return new WaitForSeconds(doorClose.clip.length);
+        doorLock.Play();
+    }
+
+    IEnumerator Death(){
+        isAbleToMove = false;
+        rb2D.AddForce(new Vector2(0f, 0f));
+        // IMPLEMENT GAME OVER
+        yield return new WaitForSeconds(1);
     }
 }
