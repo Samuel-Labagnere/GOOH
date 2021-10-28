@@ -176,7 +176,7 @@ public class CharacterBehavior : MonoBehaviour
         batteryMinusSound.volume = PlayerPrefs.GetFloat("volume");
         batteryPlusSound.volume = PlayerPrefs.GetFloat("volume");
         flashlightOffSound.volume = PlayerPrefs.GetFloat("volume");
-        batteryEmptySound.volume = PlayerPrefs.GetFloat("volume");
+        batteryEmptySound.volume = PlayerPrefs.GetFloat("volume") / 4f;
         coinSound.volume = PlayerPrefs.GetFloat("volume");
         
         // FLASHLIGHT
