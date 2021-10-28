@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class CharacterBehavior : MonoBehaviour
 {
+    [SerializeField] private AudioSource music;
+
     // GAMEOBJECTS
     private GameObject character;
     private GameObject flashlight;
@@ -61,6 +63,9 @@ public class CharacterBehavior : MonoBehaviour
     // CHANGE ROOM
     private bool level1TpStepped = false;
     [SerializeField] private GameObject level1Spawner;
+    public bool isOnLevel1;
+    public bool isOnLevel2;
+    public bool isOnLevel3;
 
     // TEXTS
     [SerializeField] private Text levelText;
@@ -73,6 +78,7 @@ public class CharacterBehavior : MonoBehaviour
         flashlight = character.transform.GetChild(0).gameObject;
         flashlight.SetActive(false);
         newBattery = batteryMax/3;
+        isOnLevel1 = false;
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         pInput = gameObject.GetComponent<PlayerInput>();
@@ -178,6 +184,7 @@ public class CharacterBehavior : MonoBehaviour
         flashlightOffSound.volume = PlayerPrefs.GetFloat("volume");
         batteryEmptySound.volume = PlayerPrefs.GetFloat("volume") / 4f;
         coinSound.volume = PlayerPrefs.GetFloat("volume");
+        music.volume = PlayerPrefs.GetFloat("volume");
         
         // FLASHLIGHT
         if(flashlight.activeSelf){
@@ -246,6 +253,15 @@ public class CharacterBehavior : MonoBehaviour
             levelText.text = "<To level 1>";
             interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
         }
+        if(col.tag == "Level1"){
+            isOnLevel1 = true;
+        }
+        if(col.tag == "Level2"){
+            isOnLevel2 = true;
+        }
+        if(col.tag == "Level3"){
+            isOnLevel3 = true;
+        }
     }
 
     void OnTriggerExit2D(Collider2D col){
@@ -254,6 +270,15 @@ public class CharacterBehavior : MonoBehaviour
             level1TpStepped = false;
             levelText.text = "";
             interactText.text = "";
+        }
+        if(col.tag == "Level1"){
+            isOnLevel1 = false;
+        }
+        if(col.tag == "Level2"){
+            isOnLevel2 = false;
+        }
+        if(col.tag == "Level3"){
+            isOnLevel3 = false;
         }
     }
 
