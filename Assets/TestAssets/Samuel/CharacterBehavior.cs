@@ -106,6 +106,7 @@ public class CharacterBehavior : MonoBehaviour
     // DEATH
     private bool isAbleToMove = true;
     public bool isDead = false;
+    [SerializeField] private AudioSource die;
     [SerializeField] private RawImage goBackground;
     [SerializeField] private SpriteRenderer goBiteTop;
     [SerializeField] private SpriteRenderer goBiteBottom;
@@ -287,6 +288,7 @@ public class CharacterBehavior : MonoBehaviour
         music.volume = PlayerPrefs.GetFloat("volume");
         goSelectSound.volume = PlayerPrefs.GetFloat("volume");
         goConfirmSound.volume = PlayerPrefs.GetFloat("volume");
+        die.volume = PlayerPrefs.GetFloat("volume");
 
         // SPRITES
         if(characterSprite.sprite == upSprite1 || characterSprite.sprite == upSprite2 || characterSprite.sprite == upSprite3){
@@ -534,6 +536,7 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     IEnumerator Death(){
+        die.Play();
         isAbleToMove = false;
         rb2D.AddForce(new Vector2(0f, 0f));
         float i = 0;
@@ -550,9 +553,9 @@ public class CharacterBehavior : MonoBehaviour
         goBiteTopBackground.color = new Color(0f, 0f, 0f, 1f);
         goBiteBottomBackground.color = new Color(0f, 0f, 0f, 1f);
         while(i < 760f){
-            i += 1f;
-            toGoTop -= 1f;
-            toGoBottom += 1f;
+            i += 20f;
+            toGoTop -= 20f;
+            toGoBottom += 20f;
             yield return new WaitForSeconds(0.000001f);
             goBiteTop.gameObject.transform.localPosition = new Vector2(4.15f, toGoTop);
             goBiteBottom.gameObject.transform.localPosition = new Vector2(4.15f, toGoBottom);
