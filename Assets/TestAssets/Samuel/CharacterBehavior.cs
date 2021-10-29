@@ -13,6 +13,12 @@ public class CharacterBehavior : MonoBehaviour
     private GameObject character;
     private GameObject flashlight;
 
+    // CHEST
+    public SpriteRenderer chest;
+    [SerializeField] private Sprite openChestSprite;
+    [SerializeField] private AudioSource endSound;
+    [SerializeField] private int chestValue;
+
     // INPUTACTIONS
     private PlayerInput pInput;
     private InputAction moveAction;
@@ -70,6 +76,7 @@ public class CharacterBehavior : MonoBehaviour
     private bool level1TpStepped = false;
     private bool level2TpStepped = false;
     private bool level3TpStepped = false;
+    private bool chestStepped = false;
     private bool level1TpBackStepped = false;
     private bool level2TpBackStepped = false;
     private bool level3TpBackStepped = false;
@@ -233,6 +240,13 @@ public class CharacterBehavior : MonoBehaviour
                 level3TpBackStepped = false;
                 StartCoroutine("DoorFromLevel");
             }
+            if(chestStepped){
+                chest.sprite = openChestSprite;
+                music.Stop();
+                endSound.Play();
+                score += chestValue;
+                scoreTxtObject.text = scoreText + score.ToString();
+            }
         }
     }
 
@@ -285,7 +299,7 @@ public class CharacterBehavior : MonoBehaviour
         flashlightOffSound.volume = PlayerPrefs.GetFloat("volume");
         batteryEmptySound.volume = PlayerPrefs.GetFloat("volume") / 4f;
         coinSound.volume = PlayerPrefs.GetFloat("volume");
-        music.volume = PlayerPrefs.GetFloat("volume");
+        music.volume = PlayerPrefs.GetFloat("volume") / 1.5f;
         goSelectSound.volume = PlayerPrefs.GetFloat("volume");
         goConfirmSound.volume = PlayerPrefs.GetFloat("volume");
         die.volume = PlayerPrefs.GetFloat("volume");
@@ -464,6 +478,12 @@ public class CharacterBehavior : MonoBehaviour
             isDead = true;
             StartCoroutine("Death");
         }
+
+        if(col.tag == "Chest"){
+            chestStepped = true;
+            levelText.text = "<Chest>";
+            interactText.text = "[Press " + InputControlPath.ToHumanReadableString(interactAction.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice, null) + " to interact]";
+        }
     }
 
     void OnTriggerExit2D(Collider2D col){
@@ -506,6 +526,11 @@ public class CharacterBehavior : MonoBehaviour
         }
         if(col.tag == "Level3"){
             isOnLevel3 = false;
+        }
+        if(col.tag == "Chest"){
+            chestStepped = false;
+            levelText.text = "";
+            interactText.text = "";
         }
     }
 

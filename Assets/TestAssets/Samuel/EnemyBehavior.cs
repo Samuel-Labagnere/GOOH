@@ -295,6 +295,11 @@ public class EnemyBehavior : MonoBehaviour
             }
             doorLock.Play();
             Destroy(enemy);
+
+            // Reveal chest
+            if(enemyNb == 3){
+                characterScript.chest.gameObject.SetActive(true);
+            }
         }else{
             col2D.enabled = false;
             laughtSound.Play();
