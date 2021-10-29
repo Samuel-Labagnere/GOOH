@@ -399,7 +399,7 @@ public class CharacterBehavior : MonoBehaviour
                     goSelect.transform.localScale = new Vector2(64.8f, 108f);
                     if(keyboard.enterKey.wasPressedThisFrame){
                         goConfirmSound.Play();
-                        SceneManager.LoadScene("Maxime");
+                        SceneManager.LoadScene("MainMenu");
                     }
                     break;
                 case 2:

@@ -287,7 +287,7 @@ public class Menu : MonoBehaviour
             confirmSound.Play();
             switch(whereSelector){
                 case "play":
-                    SceneManager.LoadScene("Samuel");
+                    SceneManager.LoadScene("MainGame");
                     break;
                 case "options":
                     homeMenu.SetActive(false);
