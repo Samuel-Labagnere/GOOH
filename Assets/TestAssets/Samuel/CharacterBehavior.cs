@@ -104,6 +104,16 @@ public class CharacterBehavior : MonoBehaviour
 
     // DEATH
     private bool isAbleToMove = true;
+    public bool isDead = false;
+    [SerializeField] private RawImage goBackground;
+    [SerializeField] private SpriteRenderer goBiteTop;
+    [SerializeField] private SpriteRenderer goBiteBottom;
+    [SerializeField] private RawImage goBiteTopBackground;
+    [SerializeField] private RawImage goBiteBottomBackground;
+    [SerializeField] private SpriteRenderer goGhost;
+    [SerializeField] private Text goText;
+    [SerializeField] private Text goRestartText;
+    [SerializeField] private Text goQuitText;
 
     void Start()
     {
@@ -135,6 +145,19 @@ public class CharacterBehavior : MonoBehaviour
         // TEXTS
         levelText.text = "";
         interactText.text = "";
+
+        // DEATH
+        goBackground.color = new Color(1f, 0f, 0f, 0f);
+        goBiteTop.gameObject.SetActive(false);
+        goBiteTop.gameObject.transform.localPosition = new Vector2(4.15f, 525f);
+        goBiteBottom.gameObject.SetActive(false);
+        goBiteBottom.gameObject.transform.localPosition = new Vector2(5.5f, -535f);
+        goBiteTopBackground.color = new Color(0f, 0f, 0f, 0f);
+        goBiteBottomBackground.color = new Color(0f, 0f, 0f, 0f);
+        goGhost.color = new Color(1f, 1f, 1f, 0f);
+        goText.text = "";
+        goRestartText.text = "";
+        goQuitText.text = "";
     }
 
     public void Move(InputAction.CallbackContext context){
@@ -144,7 +167,7 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     public void Flashlight(InputAction.CallbackContext context){
-        if(flashlightAction.triggered){
+        if(flashlightAction.triggered && !isDead){
             if(battery <= 0){
                 batteryEmptySound.Play();
             }else{
@@ -162,7 +185,7 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     public void Interact(InputAction.CallbackContext context){
-        if(interactAction.triggered){
+        if(interactAction.triggered && !isDead){
             // Debug.Log("Interact!");
             if(level1TpStepped){
                 rb2D.AddForce(new Vector2(0f, 0f));
@@ -385,7 +408,8 @@ public class CharacterBehavior : MonoBehaviour
         }
 
         // DEATH
-        if(col.gameObject.layer == 10){
+        if(col.gameObject.layer == 10 && !isDead){
+            isDead = true;
             StartCoroutine("Death");
         }
     }
@@ -460,9 +484,56 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     IEnumerator Death(){
+        // goBackground.color = new Color(1f, 0f, 0f, 0f);
+        // goBiteTop.gameObject.SetActive(false);
+        // goBiteBottom.gameObject.SetActive(false);
+        // goBiteTopBackground.color = new Color(0f, 0f, 0f, 0f);
+        // goBiteBottomBackground.color = new Color(0f, 0f, 0f, 0f);
+        // goGhost.color = new Color(1f, 1f, 1f, 0f);
+        // goText.text = "";
+        // goRestartText.text = "";
+        // goQuitText.text = "";
+
         isAbleToMove = false;
         rb2D.AddForce(new Vector2(0f, 0f));
-        // IMPLEMENT GAME OVER
-        yield return new WaitForSeconds(1);
+        float i = 0;
+        while(i < 1f){
+            goBackground.color = new Color(1f, 0f, 0f, i);
+            yield return new WaitForSeconds(0.01f);
+            i += 0.01f;
+        }
+        i = 0;
+        float toGoTop = 525f;
+        float toGoBottom = -535f;
+        goBiteTop.gameObject.SetActive(true);
+        goBiteBottom.gameObject.SetActive(true);
+        goBiteTopBackground.color = new Color(0f, 0f, 0f, 1f);
+        goBiteBottomBackground.color = new Color(0f, 0f, 0f, 1f);
+        while(i < 760f){
+            i += 1f;
+            toGoTop -= 1f;
+            toGoBottom += 1f;
+            yield return new WaitForSeconds(0.000001f);
+            goBiteTop.gameObject.transform.localPosition = new Vector2(4.15f, toGoTop);
+            goBiteBottom.gameObject.transform.localPosition = new Vector2(4.15f, toGoBottom);
+        }
+        i = 0;
+        goText.color = new Color(1f, 1f, 1f, 0f);
+        goRestartText.color = new Color(1f, 1f, 1f, 0f);
+        goQuitText.color = new Color(1f, 1f, 1f, 0f);
+        goText.text = "GAME OVER";
+        goRestartText.text = "RESTART";
+        goQuitText.text = "QUIT";
+        while(i < 1f){
+            goGhost.color = new Color(1f, 1f, 1f, i);
+            goText.color = new Color(1f, 1f, 1f, i);
+            goRestartText.color = new Color(1f, 1f, 1f, i);
+            goQuitText.color = new Color(1f, 1f, 1f, i);
+            yield return new WaitForSeconds(0.01f);
+            i += 0.01f;
+        }
+
+
+
     }
 }

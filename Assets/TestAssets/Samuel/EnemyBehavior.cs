@@ -112,6 +112,12 @@ public class EnemyBehavior : MonoBehaviour
             EnemyStats.SetActive(false);
         }
 
+        if(characterScript.isDead){
+            enemySprite.color = new Color(1f, 1f, 1f, 1f);
+            alertSound.Stop();
+            ledSound.Stop();
+        }
+
         // MOVEMENT
         if(direction.y > 0f){
             enemySprite.sprite = upSprite;
