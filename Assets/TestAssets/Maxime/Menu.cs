@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class Menu : MonoBehaviour
 
@@ -39,6 +40,8 @@ public class Menu : MonoBehaviour
     private int left;
     private int down;
     private int right;
+
+    [SerializeField] private VideoPlayer videoPlayer;
 
 
         
@@ -233,8 +236,10 @@ public class Menu : MonoBehaviour
     }
 
     void handleHome(){
+        // var videoPlayer;
+        // videoPlayer = GameObject.Find("Main Camera").GetComponent<UnityEngine.Video.VideoPlayer>();
         var keyboard = Keyboard.current;
-        if(keyboard.downArrowKey.wasPressedThisFrame){
+        if(keyboard.downArrowKey.wasPressedThisFrame && !videoPlayer.isPlaying){
             moveSound.Play();
             switch(whereSelector){
                 case "play":
@@ -256,7 +261,7 @@ public class Menu : MonoBehaviour
             }
         }
 
-        if(keyboard.upArrowKey.wasPressedThisFrame){
+        if(keyboard.upArrowKey.wasPressedThisFrame && !videoPlayer.isPlaying){
             moveSound.Play();
             switch(whereSelector){
                 case "play":
@@ -278,7 +283,7 @@ public class Menu : MonoBehaviour
             }
         }
         
-        if(keyboard.enterKey.wasPressedThisFrame){
+        if(keyboard.enterKey.wasPressedThisFrame && !videoPlayer.isPlaying){
             confirmSound.Play();
             switch(whereSelector){
                 case "play":
@@ -295,9 +300,19 @@ public class Menu : MonoBehaviour
                     Application.Quit();
                     break;
                 case "credits":
-                    // homeMenu.SetActive(false);
-                    // credits.SetActive(true);
+                    videoPlayer.Play();
                     break;
+            }
+        }
+        if(videoPlayer.isPlaying){ 
+            float videoFrame = videoPlayer.frame;
+            float videoMaxFrame = videoPlayer.frameCount - 1;
+            if(videoFrame == videoMaxFrame){
+                videoPlayer.Stop();
+            }
+            if(keyboard.anyKey.wasPressedThisFrame){
+            confirmSound.Play();
+            videoPlayer.Stop();
             }
         }
     }
