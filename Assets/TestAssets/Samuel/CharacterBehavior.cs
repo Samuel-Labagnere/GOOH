@@ -553,9 +553,9 @@ public class CharacterBehavior : MonoBehaviour
         goBiteTopBackground.color = new Color(0f, 0f, 0f, 1f);
         goBiteBottomBackground.color = new Color(0f, 0f, 0f, 1f);
         while(i < 760f){
-            i += 20f;
-            toGoTop -= 20f;
-            toGoBottom += 20f;
+            i += 10f;
+            toGoTop -= 10f;
+            toGoBottom += 10f;
             yield return new WaitForSeconds(0.000001f);
             goBiteTop.gameObject.transform.localPosition = new Vector2(4.15f, toGoTop);
             goBiteBottom.gameObject.transform.localPosition = new Vector2(4.15f, toGoBottom);
