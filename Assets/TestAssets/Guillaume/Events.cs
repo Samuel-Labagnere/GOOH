@@ -10,14 +10,15 @@ public class Events : MonoBehaviour
     [SerializeField] private AudioSource earthquake;
     [SerializeField] private AudioSource thunder;
     [SerializeField] private AudioSource laught;
+    [SerializeField] private AudioSource laught2;
     [SerializeField] private AudioSource ceramic;
     [SerializeField] private AudioSource glass;
-    //Audio Deley
-    [SerializeField] private float thunderDelay;
-    [SerializeField] private float earthquakeDelay;
-    [SerializeField] private float laughtDelay;
+    [SerializeField] private AudioSource guillotine;
+    [SerializeField] private AudioSource knocking;
+    [SerializeField] private AudioSource metal;
+    [SerializeField] private AudioSource wolf;
 
-
+  
     //GameOgjects
     [SerializeField] private GameObject windows;
 
@@ -30,9 +31,14 @@ public class Events : MonoBehaviour
         // laught.volume = PlayerPrefs.GetFloat("volume");
         // ceramic.volume = PlayerPrefs.GetFloat("volume");
         // glass.volume = PlayerPrefs.GetFloat("volume");
+        // laught2.volume = PlayerPrefs.GetFloat("volume");
+        // guillotine.volume = PlayerPrefs.GetFloat("volume");
+        // knocking.volume = PlayerPrefs.GetFloat("volume");
+        // metal.volume = PlayerPrefs.GetFloat("volume");
+        // wolf.volume = PlayerPrefs.GetFloat("volume");
         
         windows.SetActive(false);
-        StartCoroutine("AbianceCoroutine");
+        StartCoroutine("AmbianceCoroutine");
         
     }
     
@@ -44,31 +50,49 @@ public class Events : MonoBehaviour
     {   
         
     }
-    void OnTriggerEnter2D(Collider2D col){
-        if(col.tag == "Ceramic"){
-            ceramic.Play(0);
-            Destroy(col.gameObject);
-        }
-        if(col.tag == "Window"){ 
-            glass.Play(0);
-            Destroy(col.gameObject);
-        }
-    }
-       
-    IEnumerator AbianceCoroutine(){
-        while(true){
-            yield return new WaitForSeconds(thunderDelay);
-            thunder.Play(0);
-            windows.SetActive(true);
-            yield return new WaitForSeconds(5.5f);
-            windows.SetActive(false);
 
-            yield return new WaitForSeconds(earthquakeDelay);
-            earthquake.Play(0);
-        
-            yield return new WaitForSeconds(laughtDelay);
-            laught.Play(0);
-            yield return new WaitForSeconds(10f);
+       
+    IEnumerator AmbianceCoroutine(){
+        int rand;
+        while(true){
+            yield return new WaitForSeconds(Random.Range(10f, 30f));
+            rand = Random.Range(1, 11); 
+            switch(rand){
+                case 1:
+                    thunder.Play(0);
+                    windows.SetActive(true);
+                    yield return new WaitForSeconds(5.5f);
+                    windows.SetActive(false);
+                    break;
+                case 2:
+                    earthquake.Play(0);
+                    break;
+                case 3:
+                    laught.Play(0);
+                    break;
+                case 4:
+                    laught2.Play(0);
+                    break;
+                case 5:
+                    ceramic.Play(0);
+                    break;
+                case 6:
+                    glass.Play(0);
+                    break;
+                case 7:
+                    guillotine.Play(0);
+                    break;
+                case 8:
+                    knocking.Play(0);
+                    break;
+                case 9:
+                    metal.Play(0);
+                    break;
+                case 10:
+                    wolf.Play(0);
+                    break;
+            }
+
         }
     }
 
