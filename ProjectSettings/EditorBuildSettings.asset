@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Maxime.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: 669e356327df6d6458fee5e2591cf92a
   - enabled: 1
-    path: Assets/Scenes/Samuel.unity
+    path: Assets/Scenes/MainGame.unity
     guid: bb2f36ca0d3be8b42bccebc2c19087d5
   m_configObjects: {}
