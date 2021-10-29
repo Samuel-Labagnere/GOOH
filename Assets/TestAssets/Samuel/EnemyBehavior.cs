@@ -10,6 +10,7 @@ public class EnemyBehavior : MonoBehaviour
     private float[] speedArray = new float[3];
     private Rigidbody2D rb2D;
     private GameObject enemy;
+    private GameObject deathField;
     private SpriteRenderer enemySprite;
     private Vector2 randomDirection;
     private bool invulnerable;
@@ -58,6 +59,7 @@ public class EnemyBehavior : MonoBehaviour
         EnemyStats.SetActive(false);
 
         enemy = gameObject;
+        deathField = enemy.transform.GetChild(0).gameObject;
         rb2D = enemy.GetComponent<Rigidbody2D>();
         speedArray[0] = -1f;
         speedArray[1] = 0f;
@@ -110,6 +112,12 @@ public class EnemyBehavior : MonoBehaviour
             EnemyStats.SetActive(true);
         }else{
             EnemyStats.SetActive(false);
+        }
+
+        if(characterScript.isDead){
+            enemySprite.color = new Color(1f, 1f, 1f, 1f);
+            alertSound.Stop();
+            ledSound.Stop();
         }
 
         // MOVEMENT
@@ -263,6 +271,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     IEnumerator Run(){
+        deathField.SetActive(false);
         hitSound.Play();
         invulnerable = true;
         rb2D.AddForce(new Vector2(0f, 0f));
@@ -309,6 +318,7 @@ public class EnemyBehavior : MonoBehaviour
             invulnerable = false;
             speed = oldSpeed;
             direction = new Vector2(speedArray[Random.Range(0, 2)], speedArray[Random.Range(0, 2)]);
+            deathField.SetActive(true);
         }
     }
 

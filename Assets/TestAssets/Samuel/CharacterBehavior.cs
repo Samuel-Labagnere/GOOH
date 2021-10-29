@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterBehavior : MonoBehaviour
 {
@@ -104,6 +105,22 @@ public class CharacterBehavior : MonoBehaviour
 
     // DEATH
     private bool isAbleToMove = true;
+    public bool isDead = false;
+    [SerializeField] private AudioSource die;
+    [SerializeField] private RawImage goBackground;
+    [SerializeField] private SpriteRenderer goBiteTop;
+    [SerializeField] private SpriteRenderer goBiteBottom;
+    [SerializeField] private RawImage goBiteTopBackground;
+    [SerializeField] private RawImage goBiteBottomBackground;
+    [SerializeField] private SpriteRenderer goGhost;
+    [SerializeField] private Text goText;
+    [SerializeField] private Text goRestartText;
+    [SerializeField] private Text goQuitText;
+    [SerializeField] private SpriteRenderer goSelect;
+    [SerializeField] private AudioSource goSelectSound;
+    [SerializeField] private AudioSource goConfirmSound;
+    private bool goDone = false;
+    private int whereSelect = 1;
 
     void Start()
     {
@@ -135,6 +152,22 @@ public class CharacterBehavior : MonoBehaviour
         // TEXTS
         levelText.text = "";
         interactText.text = "";
+
+        // DEATH
+        goBackground.color = new Color(1f, 0f, 0f, 0f);
+        goBiteTop.gameObject.SetActive(false);
+        goBiteTop.gameObject.transform.localPosition = new Vector2(4.15f, 525f);
+        goBiteBottom.gameObject.SetActive(false);
+        goBiteBottom.gameObject.transform.localPosition = new Vector2(5.5f, -535f);
+        goBiteTopBackground.color = new Color(0f, 0f, 0f, 0f);
+        goBiteBottomBackground.color = new Color(0f, 0f, 0f, 0f);
+        goGhost.color = new Color(1f, 1f, 1f, 0f);
+        goText.text = "";
+        goRestartText.text = "";
+        goQuitText.text = "";
+        goSelect.gameObject.SetActive(false);
+        goSelect.transform.localPosition = new Vector2(-175.9f, -374.9f);
+        goSelect.transform.localScale = new Vector2(64.8f, 108f);
     }
 
     public void Move(InputAction.CallbackContext context){
@@ -144,7 +177,7 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     public void Flashlight(InputAction.CallbackContext context){
-        if(flashlightAction.triggered){
+        if(flashlightAction.triggered && !isDead){
             if(battery <= 0){
                 batteryEmptySound.Play();
             }else{
@@ -162,7 +195,7 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     public void Interact(InputAction.CallbackContext context){
-        if(interactAction.triggered){
+        if(interactAction.triggered && !isDead){
             // Debug.Log("Interact!");
             if(level1TpStepped){
                 rb2D.AddForce(new Vector2(0f, 0f));
@@ -253,6 +286,9 @@ public class CharacterBehavior : MonoBehaviour
         batteryEmptySound.volume = PlayerPrefs.GetFloat("volume") / 4f;
         coinSound.volume = PlayerPrefs.GetFloat("volume");
         music.volume = PlayerPrefs.GetFloat("volume");
+        goSelectSound.volume = PlayerPrefs.GetFloat("volume");
+        goConfirmSound.volume = PlayerPrefs.GetFloat("volume");
+        die.volume = PlayerPrefs.GetFloat("volume");
 
         // SPRITES
         if(characterSprite.sprite == upSprite1 || characterSprite.sprite == upSprite2 || characterSprite.sprite == upSprite3){
@@ -323,6 +359,45 @@ public class CharacterBehavior : MonoBehaviour
         }else if(sprintCldn <= 0){
             isAbleToSprint = true;
         }
+
+        // DEATH
+        if(isDead){
+            walkSound.Stop();
+        }
+        if(goDone){
+            var keyboard = Keyboard.current;
+            if(keyboard.leftArrowKey.wasPressedThisFrame){
+                whereSelect -= 1;
+                goSelectSound.Play();
+            }else if(keyboard.rightArrowKey.wasPressedThisFrame){
+                whereSelect += 1;
+                goSelectSound.Play();
+            }
+            if(whereSelect <= 0){
+                whereSelect = 2;
+            }else if(whereSelect >= 3){
+                whereSelect = 1;
+            }
+
+            switch(whereSelect){
+                case 1:
+                    goSelect.transform.localPosition = new Vector2(-175.9f, -374.9f);
+                    goSelect.transform.localScale = new Vector2(64.8f, 108f);
+                    if(keyboard.enterKey.wasPressedThisFrame){
+                        goConfirmSound.Play();
+                        SceneManager.LoadScene("Maxime");
+                    }
+                    break;
+                case 2:
+                    goSelect.transform.localPosition = new Vector2(175.9f, -374.9f);
+                    goSelect.transform.localScale = new Vector2(42.4f, 108f);
+                    if(keyboard.enterKey.wasPressedThisFrame){
+                        goConfirmSound.Play();
+                        Application.Quit();
+                    }
+                    break;
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D col){
@@ -385,7 +460,8 @@ public class CharacterBehavior : MonoBehaviour
         }
 
         // DEATH
-        if(col.gameObject.layer == 10){
+        if(col.gameObject.layer == 10 && !isDead){
+            isDead = true;
             StartCoroutine("Death");
         }
     }
@@ -460,9 +536,48 @@ public class CharacterBehavior : MonoBehaviour
     }
 
     IEnumerator Death(){
+        die.Play();
         isAbleToMove = false;
         rb2D.AddForce(new Vector2(0f, 0f));
-        // IMPLEMENT GAME OVER
-        yield return new WaitForSeconds(1);
+        float i = 0;
+        while(i < 1f){
+            goBackground.color = new Color(1f, 0f, 0f, i);
+            yield return new WaitForSeconds(0.01f);
+            i += 0.01f;
+        }
+        i = 0;
+        float toGoTop = 525f;
+        float toGoBottom = -535f;
+        goBiteTop.gameObject.SetActive(true);
+        goBiteBottom.gameObject.SetActive(true);
+        goBiteTopBackground.color = new Color(0f, 0f, 0f, 1f);
+        goBiteBottomBackground.color = new Color(0f, 0f, 0f, 1f);
+        while(i < 760f){
+            i += 10f;
+            toGoTop -= 10f;
+            toGoBottom += 10f;
+            yield return new WaitForSeconds(0.000001f);
+            goBiteTop.gameObject.transform.localPosition = new Vector2(4.15f, toGoTop);
+            goBiteBottom.gameObject.transform.localPosition = new Vector2(4.15f, toGoBottom);
+        }
+        i = 0;
+        goSelect.color = new Color(1f, 1f, 1f, 0f);
+        goSelect.gameObject.SetActive(true);
+        goText.color = new Color(1f, 1f, 1f, 0f);
+        goRestartText.color = new Color(1f, 1f, 1f, 0f);
+        goQuitText.color = new Color(1f, 1f, 1f, 0f);
+        goText.text = "GAME OVER";
+        goRestartText.text = "RESTART";
+        goQuitText.text = "QUIT";
+        while(i < 1f){
+            goGhost.color = new Color(1f, 1f, 1f, i);
+            goText.color = new Color(1f, 1f, 1f, i);
+            goRestartText.color = new Color(1f, 1f, 1f, i);
+            goQuitText.color = new Color(1f, 1f, 1f, i);
+            goSelect.color = new Color(1f, 1f, 1f, i);
+            yield return new WaitForSeconds(0.01f);
+            i += 0.01f;
+        }
+        goDone = true;
     }
 }
